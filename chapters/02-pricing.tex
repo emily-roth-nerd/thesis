@@ -1,0 +1,276 @@
+\chapter{Optimal Pricing on Networks under Partition Constraints}\label{ch:pricing}
+
+% Write-up window in the plan: Oct 5 -- Oct 18.
+% If this chapter is based on a paper, start by pasting the paper in and
+% then (1) remove the paper's own intro/lit review overlap with Ch. 1,
+% (2) switch notation to the macros in thesis.sty, (3) fix \cref labels.
+
+\section{Introduction}\label{sec:pricing:intro}
+
+		Using social network information to harness peer effects has been an active research topic in recent years. Network effects shape critical outcomes in a social network such as the spread of information, ideas and disease (see, e.g.,~\cite{banerjee2013diffusion},
+~\cite{pastor2001epidemic},
+~\cite{muchnik2013social},
+~\cite{chamley2004rational}), adoption of products (see, e.g.,~\cite{bapna2015your, rogers1976new, wang2016consumer}) among others.
+
+	Our work is related to the broader literature on positive network externalities~\cite{farrell1985standardization},~\cite{katz1985network} and in particular to marketing with positive network
+	externalities. This literature is categorized in two streams. The first stream aims at maximizing adoption through {\it influence maximization} and the second stream aims at {\it revenue maximization} through pricing decisions.
+	
+ Influence maximization initially introduced in~\cite{domingos2001mining} aims at identifying the best {\it seeds} to trigger cascades of influence that maximize the overall spread of influence and adoption in the social network. Subsequent literature has studied influence maximization in various settings, see, e.g.,~\cite{richardson2002mining} and~\cite{banerjee2013diffusion}.~\cite{kempe2003maximizing} showed that this problem is computationally hard, but approximation
+	algorithms provide good performance with provable guarantees. Recent work~\cite{akbarpour2018} studied 
+	the value of network information for influence maximization and showed that for a class of random networks, random seeding strategies with a few more seeds can lead to  larger cascades than optimal seed selection. Follow up work~\cite{Jackson-Storms-2017} has showed that this may not be the case for all networks and uncertainty structures. This follow up work is in the spirit of our work.
+	
+	Our work mainly belongs to the revenue maximization stream. Revenue maximization problems aim at maximizing the revenue through pricing. There has been much research using pricing under
+	network effects in
+	the setting of sequential purchase decisions
+	(see, e.g.,~\cite{hartline2008optimal},~\cite{arthur2009pricing},
+~\cite{haghpanah2013optimal},~\cite{crapis2016monopoly},~\cite{zhou2018optimal}) and
+	simultaneous purchase decisions (see, e.g.,~\cite{campbell2013word},
+~\cite{du2016optimal},~\cite{chen2018competitive},~\cite{cohen2013designing}). Such
+	problems are often computationally hard and most literature focuses
+	on the computational  aspect.
+	
+	Our work is closely related to the static pricing problem of selling
+	a divisible product to a group of consumers with positive network
+	externalities, in particular, the works of~\cite{huang2019value},~\cite{huang2022value},\cite{candogan2012optimal},~\cite{bloch2013pricing} and~\cite{fainmesser2015pricing},~\cite{Baron-2022}. In particular, we build upon the model in~\cite{huang2022value}. These
+	works consider a two-stage game, in which the merchant first
+	chooses the prices and then the consumers, embedded in a social
+	network, make purchasing decisions simultaneously.~\cite{candogan2012optimal} and~\cite{bloch2013pricing} assume full network information, while~\cite{fainmesser2015pricing},~\cite{Baron-2022},\cite{huang2019value}, and~\cite{huang2022value} assume incomplete network information. In
+	these works, prices can be set differently based upon consumers'
+	positions in the social network. The question of interest in~\cite{candogan2012optimal},~\cite{bloch2013pricing} and~\cite{fainmesser2015pricing} is to
+	characterize and identify optimal prices and profits in the networks
+	and the complexity of computing optimal prices. In contrast,~\cite{huang2019value},~\cite{huang2022value} quantify the value of network information for pricing in Erd\"{o}s-Renyi random networks and Power-law networks under configuration model. Their results show that in such networks the value of network information vanishes asymptotically in the size of the network. Our work is the first to show that there exists a class of random networks (with community structure that persists asymptotically) for which the value of network information does not vanish asymptotically. Further, our work is the first to show that in such networks, the merchant does not need the full network information and the community structure and membership  information is sufficient to derive near optimal profit, thus establishing that the community information is very valuable while the rest of the information about the network may not have much value.
+	
+	Moreover, in developing the asymptotic value
+	of network information in random networks, we find connections
+	with graph theory and random graph theory, in particular, the literature on counting
+	the number of walks of different lengths in a network
+	(see, e.g.,~\cite{fiol2009number},~\cite{levin2017counting}), on spectral
+	graph theory (see, e.g.,~\cite{krivelevich2003largest},~\cite{chung2004spectra},~\cite{preciado2017moment}), and on
+	network centrality (see, e.g.,~\cite{bonacich1987power}).
+
+
+\section{Model}\label{sec:pricing:model}
+In this section, we introduce the preliminary model for the merchant and the agents. We study a firm selling a divisible good to agents embedded in a directed social network. The network is represented by a matrix $G \in \mathbb{R}^{n\times n}_{+}$ where $G_{ij}$ is the influence the $j$th consumer has on the $i$th.   The merchant first sets prices, and then each consumer chooses how much to purchase as a function of their position in the network and the price charged. The consumers all make a single purchasing decision simultaneously. 
+
+  
+\subsection{Consumer utilities}
+Each agent, $i$, consumes an amount of the good, $x_i$, to maximize their own personal utility, $u_i$. Let $\tb{x},\tb{u}$, and $\tb{p}$ denote the vectors of consumption, utility, and price, respectively. Utility depends on one's consumption, the price they are charged, and the consumption of peers. This network externality incorporates the impact that social connections have on consumption. As one's peers consume more, the marginal   utility of consuming more increases.  In full, the utility function for the ith individual is 
+\[u_i(x_i, \mathbf{x}_{-i}, p_i) = ax_i - p_i x_i - x_i^2 + 4\rho x_i \sum_{j\neq i} \frac{G_{ij}}{\| G +G^T\|}x_j .\]
+
+Here, $a>0$ and $\rho \in (0,1)$ are constants. $a$ represents the utility gained from obtaining the first unit of the good, and $\rho$ represents the strength of the network externality effect.  The scaling factor $\frac{1}{\|G+G\|}$ ensures that the model has well-defined solutions as described below. 
+
+In this model, each agent will purchase an amount to maximize their own personal utility. But this decision requires knowing how much their peers are consuming, and the peers need to know how much their peers are consuming.  This is a network game and has been shown to have a unique equilibrium. 
+
+\begin{proposition}[Unique Equilibrium~\cite{candogan2012optimal}, eq. 5]
+    When the merchant charges the users $\textbf{p}$, there is a unique equilibrium consumption of the form:
+    \begin{equation}
+        \mathbf{x}^*(\bp) = \frac{1}{2} {\left(I - 2\rhof G\right)}^{-1} (a\bo - \bp) 
+    \end{equation}
+\end{proposition}
+
+
+The expression $ {\left( I - 2\rho\frac{G}{\|G + G^T\|}\right)}^{-1} $ is well-defined and exists because $2 \rho \frac{G}{\| G +G^T\|}$ has all of its eigenvalues with magnitude between 0 and 1. Therefore, this matrix will have a well-defined inverse~\cite{fan1949theorem}. The term ${(I - 2\rhof G)}^{-1}$ can be expanded as $\sum_{k=0}^\infty {\left(2\rhof\right)}^k G^k$, and this expansion provides more insight into what this term says about how the network structure determines consumption. The ij-th element in the kth term of this series represents the number of walks of length exactly k from i to j discounted by a factor of ${\left(2 \rhof\right)}^k$. 
+
+\subsection{Optimal Pricing}
+The problem of the merchant is to maximize the profit under this consumption model. The profit from consumer $i$ is how much they consumed times the net profit per unit for that individual. The net profit per unit is $p_i - c$, where $a>c>0$ is the cost per unit of production. The total profit is the sum over the profit from each individual. In summary, the problem is 
+\begin{equation}
+    \max_{\bp} \frac{1}{2} {(\bp - c \bo )}^T \mathbf{x} (\bp) 
+\end{equation}
+
+This problem has an explicit solution given below. 
+\begin{proposition}[Optimal Price,~\cite{candogan2012optimal} Theorem 3]
+    With a cost of production c, the profit-maximizing price vector is:
+    \begin{align*}
+        \bp^* &= %\frac{a+c}{2} \bo + \frac{a-c}{2} \rhof G^T \left(I - \rhof (G+G^T)\right)^{-1} \bo \\
+        %&- \frac{a-c}{2}  \rhof G \left(I - \rhof (G+G^T)\right)^{-1} \bo \\
+         \frac{a+c}{2} \bo  + \rhof \frac{a-c}{2}  (G-G^T) {\left(I - \rhof (G+G^T)\right)}^{-1} \bo
+    \end{align*}
+
+    This price yields the optimal profit, $\Pi^*$ of:
+    \begin{equation}\label{eq:opt_prof}
+        \Pi^* = \frac{{(a-c)}^2}{8} \bo^T {\left(I - \rhof (G+G^T) \right)}^{-1} \bo
+    \end{equation}
+\end{proposition}
+
+The expression of the price looks complicated but can be broken down into three parts. The first part represents a common term that everyone is charged. The second term is a markup that a consumer is charged for being influenced in the network, and the third term is a discount for being influential in the network. A consumer will frequently be both the influenced and the influencer. These markup and discount terms are based on the expression ${\left(I - \rhof (G+G^T) \right)}^{-1} \bo$, the Bonacich centrality vector. This is another weighted sum of walks in a network, but now $G+G^T$ is used, while the consumption in the network was based on $2G$. The optimal profit is proportional to the sum over all centrality of all nodes. Equation~\ref{eq:opt_prof} says that the optimal profit is proportional to the weighted sum of walks in the network $G+G^T$. 
+
+\subsection{Regret}
+
+In this chapter, we will study how well different pricing strategies compare to each other. To formally study these questions, we introduce the notions of regret and fractional regret consistent with previous work~\cite{huang2022value}. 
+
+\begin{definition}
+    The regret of a price vector $\bp$ compared to $\tb{q}$ is $Regret(G, \tb{p}, \tb{q}) \defeq \Pi(\tb{q}) - \Pi(\bp)$ where $G$ is the underlying network of $\Pi$.
+\end{definition}
+
+Although this is the most natural notion of regret, an additive measure of regret breaks down as we work on networks with different topologies and sizes. A regret of  $\$10,000$ could be a small loss or a catastrophic loss and without proper context it is not clear how to tell. Instead, we will often choose to ask what fraction of the possible profit is lost with the fractional regret. 
+
+\begin{definition}
+    The fractional regret of a price vector $\tb{p}$ compared to $\tb{q}$ is $Regret_F(G, \tb{p}, \tb{q}) \defeq 1 - \frac{\Pi(\bp)}{\Pi(\tb{q})}$
+    where G is the underlying network of $\Pi$.
+\end{definition}
+
+We will frequently care about these notions of regret when comparing to the optimal price $\tb{p}^*$ and will make it clear when this is not the case.  In particular, we will say a price $\tb{p}$ has zero-regret or is regret free if the regret of $\tb{p}$  compared to $\tb{p}^*$ is zero. 
+
+
+\section{Pricing under Partial Network Information}\label{sec:part_info}
+\subsection{Random Networks}
+Next, we would like to move to the study of random networks. To motivate this change, in note that one issue with studying the profits and regrets of deterministic graphs is that they are sensitive to local changes in the network. The addition or deletion of a single edge, even in a large network, could reduce the regret from a large quantity to 0. An example is given in Figure~\ref{fig:non-robust}. In this Figure, the network on the left has a high regret using uniform pricing, but the addition of one edge reduces this regret to zero. This is because the centralities of the network go from being uneven to all identical. 
+% \begin{figure}[t!]
+%     \centering
+%     \hfill
+%     \subfloat[An example of a network where there is significant regret from using uniform pricing. \label{fig:non-robusta}]{\includegraphics[height=1.1in]{Figures/p1.png}
+%     }
+%     \hfill 
+%     \subfloat[A second graph where the addition of one extra edge reduces the regret to 0.\label{fig:non-robustb}]{
+%         \includegraphics[height=1.1in]{Figures/p2.png}
+%     }
+%     \hfill 
+% \end{figure}\label{fig:non-robust}
+
+
+To further study the phenomenon of pricing on networks in a more robust way, we study the problem over a sequence of random graphs increasing in size. We will study the expected regret for a sequence of random graphs under different pricing schemes. We are especially interested in the asymptotic behavior of this expected regret as the size of the network grows.
+\begin{definition}
+    A random graph sequence $\{G_n\}$ is a set of graphs indexed by the number of nodes where each graph $G_n$ is a sample from some distribution. 
+\end{definition}
+
+
+The results of this work are focused on what the merchant should do when they have uncertainty about the network, in particular, uncertainty about what edges exist. The merchant might have some partial or inaccurate view of the network instead of seeing the true network. Formally, the merchant has some information that generates a probability distribution $\mathcal{F}$ of networks. 
+
+
+The merchant's problem in this regime is to maximize the expected profit given their information where the  expectation is over the possible graphs they might encounter. 
+\begin{align}
+        \max_{\bp}  \frac{1}{2}  {\left(\bp - c \bo \right)}^T \ex{\tb{x}(\tb{p})}
+\end{align}
+
+
+This expected profit depends on the expected consumption of users in the network given a price. The consumption vector is a random variable that takes the form \[\tb{x}(\tb{p}) = B_\mathcal{F} (a\tb{1} -\tb{p}), \mbox{ where } B_\mathcal{F} := {\left(I - 2\frac{\rho G}{\|G + G^T\|} \right)}^{-1}.\] The term $(a\tb{1} -\tb{p})$ is not random, so only $B_\mathcal{F}$ is random and requires further analysis. This represents the weighted sum of walks for a specific random instance of the network. This means that we can write the problem of pricing uncertainty as
+
+\begin{definition}
+    The merchant's problem under partial information is \[\max_{\bp}  \frac{1}{2}  {\left(\bp - c \bo \right)}^T
+    \ex{B_\mathcal{F}} (a\tb{1} -\tb{p})\]
+\end{definition}
+
+In practice, analyzing the distribution of $B_\mathcal{F}$ could very complex, but quantifying the expected value of the weighted sum of walks might be more tractable under different distributions over the network. If we are able to compute this expected matrix then we can compute the optimal price vector. $\ex{B_\mathcal{F}}$ represents the expected weighted sum of walks in the network over the distribution $\mathcal{F}$.  We provide the expression for the optimal price vector as a function of $\ex{B_\mathcal{F}}$ in the following Proposition.
+
+
+\begin{proposition}\label{prop-info-price}
+% %% Change information M -> I in this section
+    Given a distribution $\mathcal{F}$ of networks, the price to charge that maximizes the expected profit is
+    \begin{align*}
+        \bp^* = \frac{a+c}{2} \bo + \frac{a-c}{2} {(\bgen + \bgen^T)}^{-1} (\bgen - \bgen^T) \bo
+  \end{align*}
+ \end{proposition}
+
+ This expression for the price is made up of a flat rate for everyone, a markup, and a discount term relative to how influential each user is in the expected matrix. Furthermore, the profit obtained using this form is given by 
+
+\begin{proposition}\label{prop:partial_info}\label{prop-info-prof}
+     The expected profit of the merchant is given by 
+     \begin{align*}
+         \frac{{(a-c)}^2}{8} {\left(\bo + \tb{v} \right)}^T \bgen \left(\bo - \tb{v} \right),
+     \end{align*}
+
+     where $\tb{v} = (\bgen + \bgen^T)^{-1} (\bgen - \bgen^T) \bo$
+ \end{proposition}
+
+We also here highlight the difference between the profit obtained in expectation and what is obtained in any random sample. The profit for any particular sample of G is given by:
+ \begin{equation*}
+     \frac{{(a-c)}^2}{8} {\left(\bo + \tb{v} \right)}^T B_\mathcal{F} \left(\bo - \tb{v} \right)
+ \end{equation*}
+ where $\tb{v} = (\bgen + \bgen^T)^{-1} (\bgen - \bgen^T) \bo$. Thus the difference between the expected profit and profit for a given instance of the network under optimal pricing comes from the middle factor. The expected discounted sum of walks matrix $\bgen$ is replaced by the discounted sum of walks $B_\mathcal{F}$ for the given instance, but the price remains the same and is based on the expected sum of walks.
+
+% %% Proof 
+
+The proof follows from expanding the profit function in terms of the profit the merchant would experience if a particular network were selected and then calculating the expected value over these possible profits. Details can be found in Appendix~\ref{proof:partial_info}.
+
+
+
+%\subsection{Expected Regret}
+
+%The comparative performance of pricing strategies for random networks can be evaluated using the expectations of regret and expected regret. We extend these notions easily to the expect regret of a price vector $\bp$ compared to $\tb{q}$ as $\ex{Regret(G, \tb{p}, \tb{q})} \defeq \ex{\Pi(\tb{q}) - \Pi(\bp)}$. Likewise, we can define the expected fractional regret as $\ex{Regret_F(G, \tb{p}, \tb{q})} \defeq 1 - \ex{\frac{\Pi(\bp)}{\Pi(\tb{q})}}$.
+
+\subsection{Pricing under no network information}
+
+% \am{Here state that when there is no network information then one can  assume that all topologies are equally likely and the expected graph as well as $E[B_F]$ is symmetric. Therefore the uniform price is optimal.}
+
+On one extreme of what information the merchant might have about the network is the case where the merchant lacks any information about the network whatsoever. When the merchant lacks any information about the network, we assume all network topologies are equally likely. This means that  $\ex{B_\mathcal{F}}$ is symmetric. From~\cite{huang2022value}, this meets the condition for the optimal price vector to be uniform, or equivalently all consumers are charged the same price. A sufficient condition for e optimal price to be uniform is that for all integers  $\ell > 0, {({G^T})}^k\ell \one = G^\ell \one$\cite{huang2022value}. That is, for all nodes, the number of incoming walks of length $\ell$ is equal to the number of outgoing walks of length $\ell$. Therefore, $\ex{B_\mathcal{F}}$ being symmetric is sufficient to establish that the optimal price is one uniform price. We state this formally in the following Proposition.
+% Given such, we can charge everyone just one price, which we will call the uniform price. This price has a simple form: 
+
+% \am{Shouldn't this be optimal expected profit?}
+\begin{proposition}[Uniform Price,~\cite{candogan2012optimal} Corollary 1]
+        When all users are charged the same price, the optimal price is:
+    \begin{equation}
+        \bp_0 = \frac{a-c}{2} \bo 
+    \end{equation}
+        Which yields an optimal expected profit of:
+        \begin{equation}
+        \Pi(\bp_0) = \frac{{(a-c)}^2}{8} \bo^T \ex{ {\left(I - 2 \rhof  G \right)}^{-1} } \bo
+    \end{equation}
+\end{proposition}
+
+
+Since this price is optimal, it has zero expected regret. Note that in this Proposition, the price computation does not require that the merchant know anything about the network, but the profit does still depend on the network even when the merchant does not observe it. This profit form, like the optimal profit, is also a weighted sum of walks in the network, but now walks over $2G$  weighted by $\frac{\rho}{\|G+G^T\|}$.
+
+We note that it may seem odd that under no network information the expected regret is zero under uniform pricing. This is because the benchmark optimal pricing is itself uniform. With partial information this would change because additional structure in the network needs to be accounted for while computing optimal prices. That is, there is a regret for not having the full network information. 
+
+
+
+
+
+
+
+\begin{assumption}[Spectral condition]\label{ass:spectral}
+$\gamma\,\spec(\Galpha) < 1$ for all $\alpha \in [0,1]$.
+\end{assumption}
+
+\begin{definition}[Partition matrix]\label{def:partition}
+A matrix $\Part \in {\{{0,1}\}}^{k \times n}$ is a \emph{partition matrix} if each
+column contains exactly one entry equal to $1$.
+\end{definition}
+
+\section{Main results}\label{sec:pricing:results}
+
+\begin{enumerate}
+    \item stochastic block model 
+    \begin{enumerate}
+        \item pricing and profit 
+        \item regret   
+        \item connection to general uncertainty 
+        \item Numerical results 
+    \end{enumerate}
+    \item partitioned prices 
+    \begin{enumerate}
+        \item pricing profit 
+        \item consistency 
+        \item experimental robustness 
+        \item connection to general uncertainty 
+        \item numerical examples 
+    \end{enumerate}
+\end{enumerate}
+
+\begin{theorem}[Constrained optimal price]\label{thm:pricing:optimal}
+Under \cref{ass:spectral}, the optimal price under partition $\Part$ is
+\begin{equation}
+  \pstar(\Part, \Res) = \Part\T \bigl(\Part M \Part\T\bigr)^{-1} \Part\,
+  \bigl(a \Res + c \Res\T\bigr) \one .
+  \label{eq:pricing:optimal}
+\end{equation}
+\end{theorem}
+
+
+
+\section{Numerical experiments}\label{sec:pricing:numerics}
+
+\begin{figure}[t]
+  \centering
+  % \includegraphics[width=0.8\textwidth]{pricing-profit.pdf}
+  \fbox{\parbox[c][1.6in][c]{0.75\textwidth}{\centering Placeholder figure\\
+    \small (replace with \texttt{\textbackslash includegraphics})}}
+  \caption{Profit as a function of partition fineness.}\label{fig:pricing:profit}
+\end{figure}
+
+\Cref{fig:pricing:profit} shows \ldots
+
+
+\section{Discussion}\label{sec:pricing:discussion}
+
+\TODO{Summary of the chapter and a bridge to \cref{ch:misinfo}.}
