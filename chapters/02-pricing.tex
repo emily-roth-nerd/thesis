@@ -112,165 +112,169 @@ Although this is the most natural notion of regret, an additive measure of regre
 We will frequently care about these notions of regret when comparing to the optimal price $\tb{p}^*$ and will make it clear when this is not the case.  In particular, we will say a price $\tb{p}$ has zero-regret or is regret free if the regret of $\tb{p}$  compared to $\tb{p}^*$ is zero. 
 
 
-\section{Pricing under Partial Network Information}\label{sec:part_info}
-\subsection{Random Networks}
-Next, we would like to move to the study of random networks. To motivate this change, in note that one issue with studying the profits and regrets of deterministic graphs is that they are sensitive to local changes in the network. The addition or deletion of a single edge, even in a large network, could reduce the regret from a large quantity to 0. An example is given in Figure~\ref{fig:non-robust}. In this Figure, the network on the left has a high regret using uniform pricing, but the addition of one edge reduces this regret to zero. This is because the centralities of the network go from being uneven to all identical. 
-% \begin{figure}[t!]
-%     \centering
-%     \hfill
-%     \subfloat[An example of a network where there is significant regret from using uniform pricing. \label{fig:non-robusta}]{\includegraphics[height=1.1in]{Figures/p1.png}
-%     }
-%     \hfill 
-%     \subfloat[A second graph where the addition of one extra edge reduces the regret to 0.\label{fig:non-robustb}]{
-%         \includegraphics[height=1.1in]{Figures/p2.png}
-%     }
-%     \hfill 
-% \end{figure}\label{fig:non-robust}
+A core question that this paper studies is what pricing schemes asymptotically have zero fractional regret for a sequence of random graphs, and what level of information is required to achieve such pricing schemes? If the fractional regret under uniform pricing goes to zero, then information of the network is not valuable. For this reason, the fractional regret of uniform pricing can be treated as the value of information. When the merchant can expect nearly the same profits without needing to learn the network, they are better off not expending the effort to do so. Below is a formal definition of what it means for the fractional regret to go to zero compared to the optimal price in the limit as the network size increases.
 
-
-To further study the phenomenon of pricing on networks in a more robust way, we study the problem over a sequence of random graphs increasing in size. We will study the expected regret for a sequence of random graphs under different pricing schemes. We are especially interested in the asymptotic behavior of this expected regret as the size of the network grows.
-\begin{definition}
-    A random graph sequence $\{G_n\}$ is a set of graphs indexed by the number of nodes where each graph $G_n$ is a sample from some distribution. 
-\end{definition}
-
-
-The results of this work are focused on what the merchant should do when they have uncertainty about the network, in particular, uncertainty about what edges exist. The merchant might have some partial or inaccurate view of the network instead of seeing the true network. Formally, the merchant has some information that generates a probability distribution $\mathcal{F}$ of networks. 
-
-
-The merchant's problem in this regime is to maximize the expected profit given their information where the  expectation is over the possible graphs they might encounter. 
-\begin{align}
-        \max_{\bp}  \frac{1}{2}  {\left(\bp - c \bo \right)}^T \ex{\tb{x}(\tb{p})}
-\end{align}
-
-
-This expected profit depends on the expected consumption of users in the network given a price. The consumption vector is a random variable that takes the form \[\tb{x}(\tb{p}) = B_\mathcal{F} (a\tb{1} -\tb{p}), \mbox{ where } B_\mathcal{F} := {\left(I - 2\frac{\rho G}{\|G + G^T\|} \right)}^{-1}.\] The term $(a\tb{1} -\tb{p})$ is not random, so only $B_\mathcal{F}$ is random and requires further analysis. This represents the weighted sum of walks for a specific random instance of the network. This means that we can write the problem of pricing uncertainty as
 
 \begin{definition}
-    The merchant's problem under partial information is \[\max_{\bp}  \frac{1}{2}  {\left(\bp - c \bo \right)}^T
-    \ex{B_\mathcal{F}} (a\tb{1} -\tb{p})\]
+    We say that a sequence of networks $\{G_n\}$ is "regret-free with respect to a pricing scheme $\tb{p}_n$"  if for any $\epsilon > 0$ there is a number $n_0$ such that for all $n > n_0$
+    \begin{equation*}
+        \ev{ Regret_F(G_n, \tb{p}_n, \tb{p}_n^*) } < \epsilon
+    \end{equation*}
+
+    Where $\tb{p}_n^*$ is the optimal price
 \end{definition}
 
-In practice, analyzing the distribution of $B_\mathcal{F}$ could very complex, but quantifying the expected value of the weighted sum of walks might be more tractable under different distributions over the network. If we are able to compute this expected matrix then we can compute the optimal price vector. $\ex{B_\mathcal{F}}$ represents the expected weighted sum of walks in the network over the distribution $\mathcal{F}$.  We provide the expression for the optimal price vector as a function of $\ex{B_\mathcal{F}}$ in the following Proposition.
+In recent work, \cite{huang2022value}, have shown that for a large class of networks, including Erd\"{o}s-Renyi graphs and Power-Law networks, the value of information goes to zero almost surely in the size of the network. Whether there exists a class of random graphs for which the fractional regret does not asymptotically vanish was an open question. Here we answer this question definitively by showing classes of random networks where the value of information is non-zero. 
+
+Throughout this work we will look at networks with a density of $\Omega( \frac{\log n}{n})$ because \cite{huang2022value} also showed that when random networks are sparser, the network effect will be weak and make up a small portion of the total profit leading to asymptotically zero regret for uniform pricing.
 
 
-\begin{proposition}\label{prop-info-price}
-% %% Change information M -> I in this section
-    Given a distribution $\mathcal{F}$ of networks, the price to charge that maximizes the expected profit is
-    \begin{align*}
-        \bp^* = \frac{a+c}{2} \bo + \frac{a-c}{2} {(\bgen + \bgen^T)}^{-1} (\bgen - \bgen^T) \bo
-  \end{align*}
- \end{proposition}
-
- This expression for the price is made up of a flat rate for everyone, a markup, and a discount term relative to how influential each user is in the expected matrix. Furthermore, the profit obtained using this form is given by 
-
-\begin{proposition}\label{prop:partial_info}\label{prop-info-prof}
-     The expected profit of the merchant is given by 
-     \begin{align*}
-         \frac{{(a-c)}^2}{8} {\left(\bo + \tb{v} \right)}^T \bgen \left(\bo - \tb{v} \right),
-     \end{align*}
-
-     where $\tb{v} = (\bgen + \bgen^T)^{-1} (\bgen - \bgen^T) \bo$
- \end{proposition}
-
-We also here highlight the difference between the profit obtained in expectation and what is obtained in any random sample. The profit for any particular sample of G is given by:
- \begin{equation*}
-     \frac{{(a-c)}^2}{8} {\left(\bo + \tb{v} \right)}^T B_\mathcal{F} \left(\bo - \tb{v} \right)
- \end{equation*}
- where $\tb{v} = (\bgen + \bgen^T)^{-1} (\bgen - \bgen^T) \bo$. Thus the difference between the expected profit and profit for a given instance of the network under optimal pricing comes from the middle factor. The expected discounted sum of walks matrix $\bgen$ is replaced by the discounted sum of walks $B_\mathcal{F}$ for the given instance, but the price remains the same and is based on the expected sum of walks.
-
-% %% Proof 
-
-The proof follows from expanding the profit function in terms of the profit the merchant would experience if a particular network were selected and then calculating the expected value over these possible profits. Details can be found in Appendix~\ref{proof:partial_info}.
+\subsection{The Stochastic Block Model}
+Now that we have developed the framework for studying regret under very general structures, we apply these methods to a particular case, the stochastic block model or SBM when it is clear.  We consider a stochastic block model, a generative random graph model, with nodes partitioned into $m$ communities each of size $n$ for a total of $mn$ total nodes. Nodes in the same community behave in a statistically independent and identical way. The probability of connection between two nodes is determined at the block-level. If a and a' are two nodes in community i and b and b' are two nodes in community j then $\Pr(\text{a has an edge to b}) = \Pr(\text{a' has an edge to b'}) = M_{ij}$ independent of the existence or non-existence of any other edge. We can collect this information into one $m \times m$ matrix M where $M_{ij}$  is the probability of connection from community i to j. We will call such a matrix the community structure matrix or the block matrix. This matrix is allowed to have diagonal entries and can be asymmetric.  
 
 
-
-%\subsection{Expected Regret}
-
-%The comparative performance of pricing strategies for random networks can be evaluated using the expectations of regret and expected regret. We extend these notions easily to the expect regret of a price vector $\bp$ compared to $\tb{q}$ as $\ex{Regret(G, \tb{p}, \tb{q})} \defeq \ex{\Pi(\tb{q}) - \Pi(\bp)}$. Likewise, we can define the expected fractional regret as $\ex{Regret_F(G, \tb{p}, \tb{q})} \defeq 1 - \ex{\frac{\Pi(\bp)}{\Pi(\tb{q})}}$.
-
-\subsection{Pricing under no network information}
-
-% \am{Here state that when there is no network information then one can  assume that all topologies are equally likely and the expected graph as well as $E[B_F]$ is symmetric. Therefore the uniform price is optimal.}
-
-On one extreme of what information the merchant might have about the network is the case where the merchant lacks any information about the network whatsoever. When the merchant lacks any information about the network, we assume all network topologies are equally likely. This means that  $\ex{B_\mathcal{F}}$ is symmetric. From~\cite{huang2022value}, this meets the condition for the optimal price vector to be uniform, or equivalently all consumers are charged the same price. A sufficient condition for e optimal price to be uniform is that for all integers  $\ell > 0, {({G^T})}^k\ell \one = G^\ell \one$\cite{huang2022value}. That is, for all nodes, the number of incoming walks of length $\ell$ is equal to the number of outgoing walks of length $\ell$. Therefore, $\ex{B_\mathcal{F}}$ being symmetric is sufficient to establish that the optimal price is one uniform price. We state this formally in the following Proposition.
-% Given such, we can charge everyone just one price, which we will call the uniform price. This price has a simple form: 
-
-% \am{Shouldn't this be optimal expected profit?}
-\begin{proposition}[Uniform Price,~\cite{candogan2012optimal} Corollary 1]
-        When all users are charged the same price, the optimal price is:
-    \begin{equation}
-        \bp_0 = \frac{a-c}{2} \bo 
-    \end{equation}
-        Which yields an optimal expected profit of:
-        \begin{equation}
-        \Pi(\bp_0) = \frac{{(a-c)}^2}{8} \bo^T \ex{ {\left(I - 2 \rhof  G \right)}^{-1} } \bo
-    \end{equation}
+This structure is random but due to the strong community structure there is a natural pricing strategy to use beyond uniform and optimal pricing. The merchant may use the community structure as a basis for pricing. That is, they set one unique price for all nodes belonging to the same community. One reason to do this is that it requires less information than the full optimal pricing. The amount of information required is given by the following proposition. required is given by the following proposition. 
+\begin{proposition}
+        Optimal block-level pricing uses full community information and requires a total of  $\Theta ( m^2 + nm )$ entries be known. 
+    
+    The full network information requirement for using optimal pricing is $\Theta( n^2 m^2 )$.
 \end{proposition}
 
+The information requirement for the optimal pricing is $\Theta(n^2 m^2)$ entries because it requires knowledge of the full adjacency matrix. Optimal pricing requires the complete adjacency matrix, which has $nm \times nm$ entries. Optimal block-level pricing requires the knowledge of community structure matrix, which has $m \times m$ entries and an additional $mn$ entries to track what community each node belongs to. We will store this community membership information into a matrix $R \in \mathbb{R}^{m \times nm}$ where $R_{ij} = \begin{cases} 1 & \text{ j in community i} \\ 0 & \text{ else} \end{cases} $.
 
-Since this price is optimal, it has zero expected regret. Note that in this Proposition, the price computation does not require that the merchant know anything about the network, but the profit does still depend on the network even when the merchant does not observe it. This profit form, like the optimal profit, is also a weighted sum of walks in the network, but now walks over $2G$  weighted by $\frac{\rho}{\|G+G^T\|}$.
-
-We note that it may seem odd that under no network information the expected regret is zero under uniform pricing. This is because the benchmark optimal pricing is itself uniform. With partial information this would change because additional structure in the network needs to be accounted for while computing optimal prices. That is, there is a regret for not having the full network information. 
-
-
-
-
-
-
-
-\begin{assumption}[Spectral condition]\label{ass:spectral}
-$\gamma\,\spec(\Galpha) < 1$ for all $\alpha \in [0,1]$.
-\end{assumption}
-
-\begin{definition}[Partition matrix]\label{def:partition}
-A matrix $\Part \in {\{{0,1}\}}^{k \times n}$ is a \emph{partition matrix} if each
-column contains exactly one entry equal to $1$.
-\end{definition}
-
-\section{Main results}\label{sec:pricing:results}
-
-\begin{enumerate}
-    \item stochastic block model 
-    \begin{enumerate}
-        \item pricing and profit 
-        \item regret   
-        \item connection to general uncertainty 
-        \item Numerical results 
-    \end{enumerate}
-    \item partitioned prices 
-    \begin{enumerate}
-        \item pricing profit 
-        \item consistency 
-        \item experimental robustness 
-        \item connection to general uncertainty 
-        \item numerical examples 
-    \end{enumerate}
-\end{enumerate}
-
-\begin{theorem}[Constrained optimal price]\label{thm:pricing:optimal}
-Under \cref{ass:spectral}, the optimal price under partition $\Part$ is
-\begin{equation}
-  \pstar(\Part, \Res) = \Part\T \bigl(\Part M \Part\T\bigr)^{-1} \Part\,
-  \bigl(a \Res + c \Res\T\bigr) \one .
-  \label{eq:pricing:optimal}
-\end{equation}
+Using this pricing strategy and given the community information, the optimal block-level price, $\tb{p}_{comm}$ is given by the following theorem. 
+% \am{$B$ has been used earlier.}
+\begin{theorem}\label{prop:group_pricing}
+    Using the communities defined by $R$, the optimal block-level price is given by:
+    \newcommand{\D}{D}
+    \begin{equation*}
+        \tb{p}_{comm} = R^T \left( R (D+D^T) R^T\right)^{-1} R (a D + cD^T) \one 
+    \end{equation*}
+    where $D = \left( I - \frac{2\rho M}{\| M+M^T\|}\right)^{-1} \otimes I_{n,n} $ and $\otimes $ is the Kronecker product operator.
 \end{theorem}
 
+ In many cases the community information is readily available to the merchant because of the user profile information. In other cases, stochastic block models, the community structure can be inferred from the partial and noisy observation of the network. To answer how good this pricing strategy is and how valuable the community information is, involves answering two questions.
+\begin{enumerate}
+    \item \emph{Does pricing using the optimal uniform pricing have non-vanishing regret?} If the answer to this question is yes then there is some value to network information. In that case the next question becomes relevant.
+    \item \emph{Does pricing using just block information lead to an asymptotically low regret solution?}
+\end{enumerate}
+The second question asks if this level of information is sufficient for low regret pricing. Our next step is answering these questions by showing having the granular view of only the community information in the network is sufficient and ignoring the network structure in determining prices is insufficient. However, when the network is too sparse, the value of the network information is already too small because the network effect it weak as shown in \cite{huang2022value}. For this reason we study a regime where the network is sufficiently dense meaning that the probability of connections scales at a rate of at least $\frac{\log(n)}{n}$.  
+%If the uniform pricing is insufficient to get a good solution, then more information about the network is needed. Answering both of these questions for the stochastic block model will tell us that some information of the network is necessary and sufficient to get a low regret solution. 
+
+The expected profit under optimal block-level pricing is given below.
+
+\begin{theorem}\label{thm:sbm_opt}
+    Let $G_n$ be a sequence of SBMs with community structure $M$ with density $p(n) = \Omega\left(\frac{\log (n)}{n}\right)$. 
+    The asymptotic expected profit under optimal block-level pricing is
+    \begin{align*}
+        &\ev{\bo^T \left(I - \frac{2\rho}{\|G+G^T\|}  G\right)^{-1} \bo}\\
+        &+ \left(\frac{\rho}{p(n) n \|M+M^T\|} \right)^2 \ex{ \bo^T (G^T-G)(G-G^T)\bo} + o\left( \left( p(n) n \|M+M^T\| \right)^{-3} \right)
+   \end{align*}
+\end{theorem}
+This particular form of the profit decomposes into three pieces based on the series expansion of the profit. The first term is the expected profit under optimal uniform pricing. The second term is the remainder of the low-order terms of the series expansion of the profit, and the third term represents the higher-order terms, which are small as compared to the first- and second-order terms as the walks are weighted geometrically by their length. Specifically, the expression in the second $\ev{\bo^T (G^T - G)(G-G^T) \bo}$ is the sum of the expected quadratic difference between the out-degree ($out_i$) and in-degree($in_i$) (the uncentered second moment) over all nodes. In other words, this is $\sum_{i=0}^{nm} E[ (in_i - out_i)^2]$.   As a corollary to Theorem \ref{thm:sbm_opt}, we obtain the regret under using uniform pricing compared to optimal pricing.
+
+\begin{corollary}
+    \label{cor:uni_sbm_reg}
+    Consider a sequence of SBMs using community structure M with density $\Omega(\frac{\log(n)}{n})$. Then the expected regret of uniform pricing is:
+    \begin{equation}
+        \left(\frac{\rho}{p(n) n \|M+M^T\|} \right)^2 \ex{ \bo^T (G^T-G)(G-G^T)\bo} + o\left( \left(p(n) n \|M+M^T\| \right)^{-3} \right)
+    \end{equation}
+\end{corollary}
+
+The proof follows by noting that the first term of Theorem \ref{thm:sbm_opt} corresponds to the profit under uniform pricing. This corollary implies that the expected regret under uniform pricing grows linearly with the number of nodes per community. This is due to the fact that the uncentered second moment grows at a rate of $\Theta(n^2 p(n)^2)$. Summing over all the nodes of the network, we find that the numerator of this expected regret is $\Theta(n^3 p(n)^2)$ and is normalized by $\frac{\rho^2}{ (p(n) n \|M+M^T\|)^2 }$, which leaves us with a regret that grows like $\frac{\rho^2 n }{\|M+M^T\|^2}$. This means we expect the regret from using uniform pricing to not vanish. 
+
+In contrast, the block-level pricing yields the following profit.  
+\begin{theorem}\label{thm:sbm_block}
+    Let $G_n$ be a sequence of SBMs with community structure $M$ with density $\Omega(\frac{\log (n)}{n})$. As the size of communities grows to infinity, the asymptotic expected profit under optimal block-level pricing using full community information is:
+        \begin{align*}
+        &\ex{ \bo^T \left(I - 2\rhof G \right)^{-1} \bo}  \\
+        &+ \left(\frac{\rho}{p(n) n \|M+M^T\|}\right)^2  \bo^T ( \ev{G^T}-\ev{G})(\ev{G}-\ev{G^T})\bo + o( (p(n) n \|M+M^T\|)^{-3} )
+    \end{align*}
+\end{theorem}
+
+This is obtained by expanding the series representation of the profits and separating terms into the uniform profit, first- and second-order terms, and higher-order terms.  In Corollary \ref{cor:uni_sbm_reg}, the additive part of the regret is equal to the sum of the second moments of the difference in degree and out-degree of each. In parallel to the uniform case, here the additive part can be expressed as the square of the expectation of the out-degree minus in, $\sum_{i=0}^{mn} (\ev{out_i} - \ev{in_i})^2$. Therefore the regret under block-level pricing using full community information, this can be written in terms of the variance of the in-degree and out-degree. 
+\begin{theorem}\label{prop:var_expression}
+        Let $G_n$ be a sequence of SBMs with community structure $M$ with density $\Omega(\frac{\log (n)}{n})$. As the size of communities grows to infinity, the expected regret from optimal block-level pricing using full community information is:
+    \begin{equation}
+        \frac{ n \rho^2}{ (n p(n) \|M+M^T\|)^2 } \sum_{i =1 }^{m} Var( in_i ) + Var(out_i)   + o\left( \left(n p(n) \|M+M^T\|\right)^{-3}\right),
+    \end{equation}
+    where $in_i, out_i$ is the random variable of in(out)degree for community  i
+\end{theorem}
+
+The variance of the in and out degree grows slower than the uncentered second moment, at a rate of $n p(n)$, but is still normalized by $\frac{1}{n^2 p(n)^2 \|M+M^T\|^2 }$. This means that the expected regret from using the full community information grows sublinearly in the number of nodes per community. A sublinear growth in the expected regret is sufficient to conclude that the expected fractional regret goes to zero as $n \to \infty$. 
 
 
-\section{Numerical experiments}\label{sec:pricing:numerics}
 
-\begin{figure}[t]
-  \centering
-  % \includegraphics[width=0.8\textwidth]{pricing-profit.pdf}
-  \fbox{\parbox[c][1.6in][c]{0.75\textwidth}{\centering Placeholder figure\\
-    \small (replace with \texttt{\textbackslash includegraphics})}}
-  \caption{Profit as a function of partition fineness.}\label{fig:pricing:profit}
+%\subsection{Methods}
+\subsection{Proof techniques}  To establish these results, we need to characterize the distribution of the spectral norm of $\|G+G^T\|$. The following Lemma states that asymptotically almost surely, this norm is close to the norm of M scaled by a factor of n. 
+
+\begin{lemma}\label{lem:norm_eq}
+    Consider a sequence of SBMs with structure M with density $p(n) = \Omega(\frac{\log n}{n})$. Then $\|G+G^T\| = p(n) \left(1+ o(1)\right) n \| M+M^T\| $ asymptotically almost surely, where n is the nodes per community 
+\end{lemma}
+A proof may be found in Appendix \ref{proof:norm_eq}. Suppose that $\mathbf{u}$ is the largest eigenvector of $M+M^T$ with $(M+M^T) \mathbf{u} = \lambda_n$. The proof then shows that the growth of the largest eigenvalue of $G+G^T$ is governed by the number of nodes per community, their density, and $\lambda_n$. An important part of this proof is that largest degree and the average degree grow like $p(n) n d_{max}(M+M^T)$ and $p(n) n d_{ave}( M+M^T)$ where $d_{max}(M+M^T)$ is the largest degree of $M+M^T$ and $d_{ave}(M+M^T)$ is the average degree. This provides an upper and lower bound on the largest eigenvalue of $G+G^T$.
+
+Additionally, another key aspect of the proofs of this section involves expanding the inverses that make up the prices and profits via the series expansion $(I - A)^{-1} = \sum_{k=0}^\infty A^k$.  From this series expansion,  we isolate the term corresponding to uniform pricing. In Theorem~\ref{thm:core_regret} and Theorem~\ref{thm:core_regret_uni} the first order terms vanish in expectation because they are linear. The terms with order higher have a limited impact on the regret because the weight of long walks decays exponentially in the length of the network. 
+% \am{This is abrupt.} There are three prices and their respective profits and regrets to consider: the optimal price with full network information, the uniform pricing with no network information required, and the optimal pricing using the block-level information. First, we discuss the gap from uniform pricing and follow it with a discussion of the performance of using block-level information. 
+
+
+\subsection{Example: The Tree Model}
+Here, we show an example to demonstrate the value of the community information. We consider a special case where the community structure M takes the form of a directed tree with weights $p(n)$. We will refer to this as the tree-SBM model. To form a Tree-SBM of height h, branching factor $b$, with $n$ nodes per community density $p(n)$  we do the following two steps:
+\begin{enumerate}
+    \item Let $M$ be the adjacency matrix of a tree with branching factor $b$ and height $h$ with edges directed from towards the the leaf node. 
+    \item Generate $G$, an $SBM$ matrix with n nodes per community with a community structure of $p(n) M$
+\end{enumerate}
+
+
+This network has a strong asymmetric structure, which means some communities are more influential than others and that we should expect uniform pricing to be a poor choice. This exercise first works to showcase the differences in uniform and block-pricing in the SBM model. But beyond this first goal, we will use the simpler structure to motivate our later study of general uncertainty structure.
+
+Here, we state the theoretical results of the regret from block-level pricing. 
+
+\begin{theorem}\label{thm:core_regret}
+    Let $\{G_n\}$ be a sequence of SBMs with a tree community structure with a branching factor of $b$ and density $p(n) = \Theta( \frac{\log n}{n})$. Then the expected regret from block-level pricing is $\Theta\left(\frac{\rho^2 b^{h}}{ p(n)}\right)$.
+
+    Furthermore, the fractional regret goes to $0$.
+\end{theorem}
+
+This theorem follows by applying Theorem \ref{prop:var_expression} and bounding the spectral norm of $\|G_n +G_n^T\|$. A full proof may be found in Appendix \ref{proof:core_regret}. This result states that the regret from using block-level pricing grows sublinearly, and there is vanishing fractional regret. Using only the block-level information as opposed to the individual edges is sufficient. The regret for optimal uniform pricing for this network is given by the following Theorem.
+
+\begin{theorem}\label{thm:core_regret_uni}
+   Let $\{G_n\}$ be a sequence of SBMs with a tree community structure with a branching factor of $b$ and density $p(n) = \Theta( \frac{\log n}{n})$. Then the expected regret from optimal uniform pricing is $\Theta\left(\frac{b^{h+1} -1 }{b-1} n \rho^2\right)$
+
+    And the fractional regret converges to a constant $0<c<1$. 
+\end{theorem}
+
+The proof follows from Corollary \ref{cor:uni_sbm_reg} and by bounding the spectral norm of the adjacency matrix. Details may be found in the Appendix \ref{proof:core_regret_uni}. For both of these results, the $b^h$ is not prohibitive as it appears. This term shows up because the total number of communities is $\frac{b^{h+1} - 1}{b-1}$ and regret for both of these pricing strategies scales with the total number of communities. Theorem \ref{thm:core_regret_uni} states that no information is insufficient for good performance. The reason for the difference is due to the differing growth rates of $Var(in), Var(out)$ for block pricing and $\ex{in^2}, \ex{out^2}$ for uniform pricing. In the variance expression, the highest-order terms cancel out. 
+
+One might wonder what happens if this community structure loses its sharpness. How much noise can the model take while still having the same asymptotic bounds? To explore this, we consider adding $\S$ random edges to a tree SBM network. As the number of random edges increases, the network becomes more and more uniform, and the discrepancy between the most and least central nodes will decrease.  We should expect that there is a threshold of noise where doing block-level pricing does not earn us an advantage over uniform pricing. We establish a clear threshold function for regret of using uniform pricing. 
+
+
+\begin{theorem}\label{thm:noise}
+    Let $\{G_n\}$ be a sequence of SBMs with a tree community structure with a branching factor of b and a density of $p(n) = \Theta \left( \frac{ \log(n)}{n} \right) $ with $\S$ random edges added. Then the expected regret from optimal uniform pricing is:
+    \begin{equation}
+       \begin{cases} 
+        \theta(n) & \text{ if } \S = o(n \log n) \\ 
+        o(n) & \text{ if } \S = \omega (n \log n)
+        \end{cases}
+    \end{equation}
+\end{theorem}
+A proof may be found in the Appendix ~\ref{proof:noise} 
+
+This result shows that only when the noise is very large, enough to overwhelm the network effect only then there is no value to information of the network. The robustness makes using this framework much more appealing, as even when the network changes or the measurements of the community structure are noisy, the merchant can expect the results to still hold. In particular, the regret is characterized by a threshold function where if the number of random edges grows below a certain rate, the fractional regret of uniform pricing goes to 0, and when K grows faster, the fractional regret goes to a positive constant. 
+ 
+% One way to conceptualize this result is that there are two competing forces: the network asymmetry and the homogenizing effect of the addition of random edges. The result shows that what matters more is determined by what is more prevalent asymptotically. Important to this conclusion is that the spectral norm will be controlled by the more common component.  
+\subsubsection{Numerical Simulation}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.45\linewidth]{Figures/Pricing/sbm.png}
+    \caption{Profits vs noise for the Tree-SBM model for three pricing strategies. Blue is the optimal profit, orange is the uniform profit, and green is the profit using block-level pricing. }
+    \label{fig:sbm}
 \end{figure}
 
-\Cref{fig:pricing:profit} shows \ldots
+Here, we show the validity of the results in this section through numerical simulation. We will simulate an SBM with a tree structure as the size of communities and the amount of noise added change. We use a tree of height 3 with 100 nodes per community.  What we see in Figure \ref{fig:sbm} is that when the noise is low, using community information does well and suffers negligible losses, while a large fraction of profits are lost using the uniform pricing. But what we see is that as the noise increases, the uniform pricing increases profit. This is because there are more total edges, so the weighted sum of walks is higher, which the uniform pricing captures. But the profits from using the block-level information decrease. This is because the differences in centrality that the block-level price hoped to capitalize on are increasingly incorrect and mismatched with the optimal price. 
+
+There is a gap in Theorem $\ref{thm:noise}$. When the amount of noise and the amount of structure are balanced and grow at the same rate, it is unclear what the behavior should be. In the next section, we address this and study a setting where the amount of noise is a fraction of the total network.
 
 
-\section{Discussion}\label{sec:pricing:discussion}
 
-\TODO{Summary of the chapter and a bridge to \cref{ch:misinfo}.}
+
+

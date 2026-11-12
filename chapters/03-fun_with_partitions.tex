@@ -1,0 +1,373 @@
+\chapter{Test}\label{ch:03_fun_with}
+% \section{Introduction}
+
+% \section{Model}
+
+
+% \textbf{List of results}
+
+% \begin{theorem}
+%     Given a partition $R$, the optimal partitioned price is given by $R^T {\left( R (B+B^T) R^T \right) }^{-1} R \tb{v} $ 
+% \end{theorem}
+
+% \begin{theorem}
+%     Using the optimal partitioned price based on $R$ the profit is given by $blah$
+% \end{theorem}
+
+% \begin{proposition}
+%     Using the optimal partitioned price based on $R$  the regret from optimal pricing is $(\tb{p}(R)-\tb{p}^*)^T \tb{W} (\tb{p}(R)-\tb{p}^*)$ 
+% \end{proposition}
+
+% \begin{proposition}
+%     If $R' \leatom R$ then Exact 
+% \end{proposition}
+
+% \begin{proposition}
+%     If $R' < R$ then  Bound 
+% \end{proposition}
+
+% \begin{proposition}
+%     If $R' < R$ then Norm 
+% \end{proposition}
+
+
+
+\subsection{Partitions}
+
+Here we develop notation to talk about partitions.  In this context, we seperate the nodes, $[n]$, into $k$ blocks. These blocks are labeled in some order, $G_1, \cdot, G_k$ so that we can refer to particular blocks. For each partition and for each node, we define the function $\commidx{P}{i}$ to return which block i is a member of in the partition P. This is well-defined because $P$ is a partition so node i belongs to one and only one block. Furthermore, we define $\comblock{P}{j} \defeq \{ i | \commidx{P}{i} = j \} $. That is this returns all the nodes of a particular block. 
+
+% In general, we represent any partition into $k$ parts, P,  with by a $k \times n $ matrix defined as $R_{ij} \defeq \begin{cases} 1 & \text{ \commidx{P}{i}=j } \\ 0 & \text{ else} \end{cases}.  Finally, we define relations between partitions via a poset. Formally, we say that $R < R'$ if R can be made from $R'$ by 'merging' on our more blocks of R' together. Precisely, this means that if $R'$ is composed of k blocks then for  any block $b$ of R, there is a set $S \in [k]$ $b = \bigcup_{j \in S} \comblock{R'}{j}$. This is a partial order so it is not the case that all pairs of partitions are comparable.  We also say that $R \leatom R'$ or that R is covered by $R'$ if we can build R with precisely one merge. Finally, we note that this ordering of partitions has a top element, each node in a block of size one, and a bottom element, all nodes in one block. 
+
+\begin{example}
+    Let's consider partitions of $[5]$
+    \begin{figure}
+        \centering 
+        \resizebox{\textwidth}{!}{
+            \input{chapters/latex_figures/partition_example.tex}
+
+        }
+        \caption{All partitions of the elements $\{1,2,3,4,5\}$. Each node is a partition and each represents two partitions are related by merging to blocks of the higher partition yields the lower partition. }
+    \end{figure}\label{fig:03-example}
+
+    Figure~\ref{fig:03-example} enumerates all the partitions of $[5]$ and places them in the Hasse diagram. To showcase the above definitions, consider first the partition $P = [(1,2), (3,4), (5)]$. For this partition, $\commidx{P}{1}=1$, $\commidx{P}{4}=2$, and so on. $4\comblock{P}{1}= \{ 1,2\}, \comblock{P}{2}={3,4}$. 
+
+    Consider three other partitions: $Q = \{(1,2), (3),(4), (5)\}, S=\{\{(1,3),(2,4),(5)\}, T=\{(1),(2), (3), (4), (5)\}$. In the nomeclature of above we would say that $P \leatom Q$ as P can be formed by by merging the $(3)$ and $(4)$ blocks of Q. We would say $P < T$ as it takes two merge operations on T to form P. In particular $P \leatom Q \leatom T$. Finally, we would say that $S$ and $P$ are not comparable and neither $P < S$ or $S < P$ is true. 
+
+    Finally, the matrix represnetation of $P$ is given by $\begin{bmatrix}
+        1 & 1 & 0 & 0 & 0 \\
+        0 & 0 & 1 & 1 & 0 \\
+        0 & 0 & 0 & 0 & 1 
+    \end{bmatrix}$
+
+\end{example}
+
+
+\section{Pricing and Profits}
+
+
+\section{Pricing under Partial Network Information}\label{sec:part_info}
+\subsection{Random Networks}
+Next, we would like to move to the study of random networks. To motivate this change, in note that one issue with studying the profits and regrets of deterministic graphs is that they are sensitive to local changes in the network. The addition or deletion of a single edge, even in a large network, could reduce the regret from a large quantity to 0. An example is given in Figure~\ref{fig:non-robust}. In this Figure, the network on the left has a high regret using uniform pricing, but the addition of one edge reduces this regret to zero. This is because the centralities of the network go from being uneven to all identical. 
+\begin{figure}[t!]
+    \centering
+    \hfill
+    \subfloat[An example of a network where there is significant regret from using uniform pricing. \label{fig:non-robusta}]{\includegraphics[height=1.1in]{Figures/Pricing/p1.png}
+    }
+    \hfill 
+    \subfloat[A second graph where the addition of one extra edge reduces the regret to 0.\label{fig:non-robustb}]{
+        \includegraphics[height=1.1in]{Figures/Pricing/p2.png}
+    }
+    \hfill 
+\end{figure}\label{fig:non-robust}
+
+
+To further study the phenomenon of pricing on networks in a more robust way, we study the problem over a sequence of random graphs increasing in size. We will study the expected regret for a sequence of random graphs under different pricing schemes. We are especially interested in the asymptotic behavior of this expected regret as the size of the network grows.
+\begin{definition}
+    A random graph sequence $\{G_n\}$ is a set of graphs indexed by the number of nodes where each graph $G_n$ is a sample from some distribution. 
+\end{definition}
+
+
+The results of this work are focused on what the merchant should do when they have uncertainty about the network, in particular, uncertainty about what edges exist. The merchant might have some partial or inaccurate view of the network instead of seeing the true network. Formally, the merchant has some information that generates a probability distribution $\mathcal{F}$ of networks. 
+
+
+The merchant's problem in this regime is to maximize the expected profit given their information where the  expectation is over the possible graphs they might encounter. 
+\begin{align}
+        \max_{\bp}  \frac{1}{2}  {\left(\bp - c \bo \right)}^T \ex{\tb{x}(\tb{p})}
+\end{align}
+
+
+This expected profit depends on the expected consumption of users in the network given a price. The consumption vector is a random variable that takes the form \[\tb{x}(\tb{p}) = B_\mathcal{F} (a\tb{1} -\tb{p}), \mbox{ where } B_\mathcal{F} := {\left(I - 2\frac{\rho G}{\|G + G^T\|} \right)}^{-1}.\] The term $(a\tb{1} -\tb{p})$ is not random, so only $B_\mathcal{F}$ is random and requires further analysis. This represents the weighted sum of walks for a specific random instance of the network. This means that we can write the problem of pricing uncertainty as
+
+\begin{definition}
+    The merchant's problem under partial information is \[\max_{\bp}  \frac{1}{2}  {\left(\bp - c \bo \right)}^T
+    \ex{B_\mathcal{F}} (a\tb{1} -\tb{p})\]
+\end{definition}
+
+In practice, analyzing the distribution of $B_\mathcal{F}$ could very complex, but quantifying the expected value of the weighted sum of walks might be more tractable under different distributions over the network. If we are able to compute this expected matrix then we can compute the optimal price vector. $\ex{B_\mathcal{F}}$ represents the expected weighted sum of walks in the network over the distribution $\mathcal{F}$.  We provide the expression for the optimal price vector as a function of $\ex{B_\mathcal{F}}$ in the following Proposition.
+
+
+\begin{proposition}\label{prop-info-price}
+% %% Change information M -> I in this section
+    Given a distribution $\mathcal{F}$ of networks, the price to charge that maximizes the expected profit is
+    \begin{align*}
+        \bp^* = \frac{a+c}{2} \bo + \frac{a-c}{2} {(\bgen + \bgen^T)}^{-1} (\bgen - \bgen^T) \bo
+  \end{align*}
+ \end{proposition}
+
+ This expression for the price is made up of a flat rate for everyone, a markup, and a discount term relative to how influential each user is in the expected matrix. Furthermore, the profit obtained using this form is given by 
+
+\begin{proposition}\label{prop:partial_info}\label{prop-info-prof}
+     The expected profit of the merchant is given by 
+     \begin{align*}
+         \frac{{(a-c)}^2}{8} {\left(\bo + \tb{v} \right)}^T \bgen \left(\bo - \tb{v} \right),
+     \end{align*}
+
+     where $\tb{v} = {(\bgen + \bgen^T)}^{-1} (\bgen - \bgen^T) \bo$
+ \end{proposition}
+
+We also here highlight the difference between the profit obtained in expectation and what is obtained in any random sample. The profit for any particular sample of G is given by:
+ \begin{equation*}
+     \frac{{(a-c)}^2}{8} {\left(\bo + \tb{v} \right)}^T B_\mathcal{F} \left(\bo - \tb{v} \right)
+ \end{equation*}
+ where $\tb{v} = {(\bgen + \bgen^T)}^{-1} (\bgen - \bgen^T) \bo$. Thus the difference between the expected profit and profit for a given instance of the network under optimal pricing comes from the middle factor. The expected discounted sum of walks matrix $\bgen$ is replaced by the discounted sum of walks $B_\mathcal{F}$ for the given instance, but the price remains the same and is based on the expected sum of walks.
+
+% %% Proof 
+
+The proof follows from expanding the profit function in terms of the profit the merchant would experience if a particular network were selected and then calculating the expected value over these possible profits. Details can be found in Appendix~\ref{proof:partial_info}.
+
+
+
+%\subsection{Expected Regret}
+
+%The comparative performance of pricing strategies for random networks can be evaluated using the expectations of regret and expected regret. We extend these notions easily to the expect regret of a price vector $\bp$ compared to $\tb{q}$ as $\ex{Regret(G, \tb{p}, \tb{q})} \defeq \ex{\Pi(\tb{q}) - \Pi(\bp)}$. Likewise, we can define the expected fractional regret as $\ex{Regret_F(G, \tb{p}, \tb{q})} \defeq 1 - \ex{\frac{\Pi(\bp)}{\Pi(\tb{q})}}$.
+
+\subsection{Pricing under no network information}
+
+% \am{Here state that when there is no network information then one can  assume that all topologies are equally likely and the expected graph as well as $E[B_F]$ is symmetric. Therefore the uniform price is optimal.}
+
+On one extreme of what information the merchant might have about the network is the case where the merchant lacks any information about the network whatsoever. When the merchant lacks any information about the network, we assume all network topologies are equally likely. This means that  $\ex{B_\mathcal{F}}$ is symmetric. From~\cite{huang2022value}, this meets the condition for the optimal price vector to be uniform, or equivalently all consumers are charged the same price. A sufficient condition for e optimal price to be uniform is that for all integers  $\ell > 0, {({G^T})}^k\ell \one = G^\ell \one$\cite{huang2022value}. That is, for all nodes, the number of incoming walks of length $\ell$ is equal to the number of outgoing walks of length $\ell$. Therefore, $\ex{B_\mathcal{F}}$ being symmetric is sufficient to establish that the optimal price is one uniform price. We state this formally in the following Proposition.
+% Given such, we can charge everyone just one price, which we will call the uniform price. This price has a simple form: 
+
+% \am{Shouldn't this be optimal expected profit?}
+\begin{proposition}[Uniform Price,~\cite{candogan2012optimal} Corollary 1]
+        When all users are charged the same price, the optimal price is:
+    \begin{equation}
+        \bp_0 = \frac{a-c}{2} \bo 
+    \end{equation}
+        Which yields an optimal expected profit of:
+        \begin{equation}
+        \Pi(\bp_0) = \frac{{(a-c)}^2}{8} \bo^T \ex{ {\left(I - 2 \rhof  G \right)}^{-1} } \bo
+    \end{equation}
+\end{proposition}
+
+
+Since this price is optimal, it has zero expected regret. Note that in this Proposition, the price computation does not require that the merchant know anything about the network, but the profit does still depend on the network even when the merchant does not observe it. This profit form, like the optimal profit, is also a weighted sum of walks in the network, but now walks over $2G$  weighted by $\frac{\rho}{\|G+G^T\|}$.
+
+We note that it may seem odd that under no network information the expected regret is zero under uniform pricing. This is because the benchmark optimal pricing is itself uniform. With partial information this would change because additional structure in the network needs to be accounted for while computing optimal prices. That is, there is a regret for not having the full network information. 
+
+
+
+
+
+
+
+\begin{assumption}[Spectral condition]\label{ass:spectral}
+$\gamma\,\spec(\Galpha) < 1$ for all $\alpha \in [0,1]$.
+\end{assumption}
+
+\begin{definition}[Partition matrix]\label{def:partition}
+A matrix $\Part \in {\{{0,1}\}}^{k \times n}$ is a \emph{partition matrix} if each
+column contains exactly one entry equal to $1$.
+\end{definition}
+
+\section{Main results}\label{sec:pricing:results}
+
+\begin{enumerate}
+    \item stochastic block model 
+    \begin{enumerate}
+        \item pricing and profit 
+        \item regret   
+        \item connection to general uncertainty 
+        \item Numerical results 
+    \end{enumerate}
+    \item partitioned prices 
+    \begin{enumerate}
+        \item pricing profit 
+        \item consistency 
+        \item experimental robustness 
+        \item connection to general uncertainty 
+        \item numerical examples 
+    \end{enumerate}
+\end{enumerate}
+
+\begin{theorem}[Constrained optimal price]\label{thm:pricing:optimal}
+Under \cref{ass:spectral}, the optimal price under partition $\Part$ is
+\begin{equation}
+  \pstar(\Part, \Res) = \Part\T {\bigl(\Part M \Part\T\bigr)}^{-1} \Part\,
+  \bigl(a \Res + c \Res\T\bigr) \one .
+  \label{eq:pricing:optimal}
+\end{equation}
+\end{theorem}
+We now consider the case when community structure and membership is unavailable but a noisy network information is available.  Suppose that the ground truth network is comprised of two parts: observed interactions and noise. The comparative strength between these two networks is controlled by a factor $\alpha$, which denotes the amount of uncertainty. That is, the network adjacency matrix has the form
+\[ H(\alpha) \defeq (1-\alpha) G + \alpha N,\]
+
+
+where $H$, the true unobserved network, is a convex combination of the the observed part $G$, and the noisy unobserved part, $N$. We assume that the noise is an Erd\H{o}s-Renyi network with the same density as the observed network. We also define $\Bkalpha \defeq  \left( I - \frac{2\rho H(\alpha)}{\|H(\alpha)+H(\alpha)^T\|} \right)^{-1}$ throughout this section. The merchant needs to partition the network and compute prices for each partition. One important decision for partition is the granularity of partition that we discuss later in this section. {\color{blue} }
+
+
+Assuming the number of partitions $k$ the problem of the merchant, if informed about the nose level $\alpha$ is as follows.
+\begin{definition}[The k-part partitioned price problem]\label{def:klevel}
+    Given a network $G$ and observed noise level $\alpha$, the optimal k-part partitioned price given $R$ is the solution to 
+    % $$ \max_{R \in P(n,k) } \max_{\theta \in \mathbb{R}^k} \frac{1}{2} ( R^T \theta - c\one)^T \ex{\Bkalpha)} (a\one - R^T \theta),$$
+     \[ \max_{R \in P(n,k) } \max_{\tb{p} \in \mathbb{R}^k} \frac{1}{2} ( \tb{p} - c\one)^T R \ex{\Bkalpha} R^T (a\one - \tb{p}),\]
+\end{definition}
+where $R \in {\{0,1}^{k \times n}$ is the partition matrix. The merchant has to make two decisions: the partitioning of the network into communities, $R$, and the price of each community $\tb{p}$. This inner problem of finding the optimal community level prices once the partition has been selected has an explicit form based on Theorem~\ref{prop:group_pricing}. The optimal partitioned price given a partition $R$ is \[  \pricealpha =  R^T \left( R \left( \ex{\Bkalpha}) + \ex{\Bkalpha})^T \right)  R^T\right) R{\left( ( a\ex{\Bkalpha}) + c\ex{\Bkalpha}^T \right)}\one .\]
+
+However, it often not possible to know $\alpha$. When the merchant does not know $\alpha$, then we assume it chooses price to maximize profit over the network $H(0) = G$. So the price offered by the merchant is $\mathbf{p}(0, R)$. We now state the profit obtained by the merchant using this pricing strategy. We represent $\Pi(\alpha, \tb{p})$ as the expected profit obtained over the random network $H(\alpha)$ using price $\tb{p}$.  We also define random vectors $\tb{v}(\alpha,R) \defeq R^T \Bkalpha \one, W(\alpha,R) \defeq R^T \left( \Bkalpha +\Bkalpha^T \right) R$ and price error $\delta \tb{p}(\alpha,R) \defeq \pricealpha - \pricezero $ that represents the change in optimal price due to uncertainty.
+
+%We also define $\theta(R,\alpha) \defeq W(R,\alpha)^{-1} R ( \Bkalpha)- \Bkalpha)^T)\one$. This term represents the group-level prices with an uncertainty of $\alpha$. Finally, let $\delta \theta_R(\alpha) \defeq \theta(R,\alpha) - \theta(R,0)$ represent the change in $\theta$ from uncertainty. 
+\begin{theorem}\label{thm:noisy-regret}
+      Let $R$ be a fixed partition and assume the noise level is $\alpha$.
+      Then the expected profit of k-level pricing $\pricezero$ is:
+     \[ \Pi(\alpha, \pricezero) = \frac{(a-c)^2}{4} \ex{ \tb{v}(\alpha,R)^T W(\alpha,R)^{-1} \tb{v}(\alpha,R)} - \frac{1}{4} \ex{(\delta \tb{p}(\alpha,R))^T (\Bkalpha) + \Bkalpha)^T) (\delta \tb{p} (\alpha,R)) } \]
+      % \begin{align}
+      %     \frac{\| P(G,R, \alpha) \tb{u}(G,\alpha)\|^2}{8}
+      % \end{align}
+
+      % And profit from $\tb{ \ex{p(H(\alpha), R)}}$ is: 
+      
+      
+      % {$$ \frac{ \| P(G,R,\alpha)) \textbf{u}(G,\alpha) \|^2  }{8} - \frac{1}{2}\| P(G, R,\alpha) S(G,\alpha)^{\frac{1}{2}}  ( \tb{p}(G,R,0) - \tb{p}(G,R,\alpha)) \|^2$$ }
+
+     % $$ \frac{\one^T R^T (R S R^T)^{-1} R \Bkalpha) \one }{ 8} - \frac{1}{4} (\tb{p}(G,R,0) - \tb{p}(G,R,\alpha))^T S (\tb{p}(G,R,0) - \tb{p}(G,R,\alpha)) $$
+\end{theorem}
+
+As notation, we suppress the dependence on $G$. The profit is comprised of two parts. The first part measures the best possible profit we could have using this partition is the network information was perfect. As the partitioning becomes coarser, this term decreases. The second term represents the cost induced by the noise. The cost depends on the difference between the optimal price under perfect network information and the price actually charged due to inaccurate network information.
+
+
+\subsection{Consumer Segmentation}
+
+One practical problem for the merchant is to find the best segmentation.   This is, in general, a computationally hard combinatorial task.  
+
+~\cite{candogan2012optimal} studied a variation where the merchant had to compute the optimal partition for two-level prices with a fixed high and low price. Instead of direct computation, the merchant must turn to approximation algorithms to find a strong partition.  
+
+The usual way of partitioning the network into $k$ partitions would be finding $k$ communities. The problem is often stated as the modularity maximization problem~\cite{karrer2011stochastic,ball2011efficient}. While this problem is also NP-hard, several approximation algorithms have been used successfully, such as the Louvain algorithm~\cite{blondel2008fast}. However, such partitions perform poorly for price differentiation. We provide examples in the appendix. Community detection algorithms provide partitions that have tight internal connections based on the spatial arrangement of the network. Nodes that are nearby can get grouped together even if they differ drastically in their level of influence. This is why they perform poorly.
+
+One natural heurstic for how to partition in practice is based on the idea grouping similar nodes together. However, this similarity is not based on the location in the network i.e. edges and walks but instead on each nodes role in the network. The simpliest way to do this is to group nodes based unrestrained price, which is itself a metric for how net influential a node is or is not. 
+
+\begin{definition}
+    A partition is said to be an \textbf{interval partition} with respect to $\tb{p}$ if for all $i,j,k \in n$  $p_i > p_j > p_k$ and i and k are in the same community then j is as well. 
+\end{definition}
+
+\begin{figure}
+    \centering
+    \resizebox{\textwidth}{!}{
+        \input{chapters/latex_figures/pricing-pipeline.tex}
+    }
+\end{figure}
+
+Consider the following algorithm sketch. 
+
+% 0. Given: G, rho, a, c, k 
+% 1. Compute the optimal prices $p^* 
+% 2. Relabel the nodes so  $p_i \geq p_{j}$ if $i>j$ 
+% 3. 
+
+    Instead, we provide a different solution for partitioning more appropriate for the task. The detailed algorithm is provided in the Appendix. The algorithm clusters consumers that have similar net flow of influence. Our algorithm approximates \emph{net influence} by the net-degree (difference in the out-degree and in-degree) of the consumers. The clustering on the net influence is then done using a dynamic programming approach. By grouping nodes with similar net-degree together, even if they are distant, the resulting partition is more aligned with the unconstrained optimal price. This in turn yields a strong performance as detailed in the Appendix~\ref{apdx:2ndorder}. In fact, we show that when taking the series expansion of the profit, this solution is optimal through the second-order terms.
+
+\subsection{Granularity of Segmentation}
+By Theorem~\ref{thm:noisy-regret} the merchant's expected profit depends upon the quality and granularity of the partition. In the absence of noise we quantify the performance of different granularities of segmentation. This performance is completely governed by the first term of the expected profit in Theorem~\ref{thm:noisy-regret}. We also compare the second term in the expected profit that captures the loss due to lack of knowledge about $\alpha$. Lower loss implies that a segmentation is more robust to noise. These two terms demonstrate the tradeoffs between optimality and robustness. If the merchant overly relies on the network G, they overfit and lose profit when noise levels are high. If they are too cautious, they will miss out on potential profit when noise levels are low.
+
+To compare consumer segmentations we fist define a partial order on segmentations. We will say that one partition, $R'$, is coarser than another, $R$, if it is possible to form $R'$ from $R$ only by merging groups. This will be denoted by $R' < R$.  Additionally, we say that $R$ covers $R'$ if $R' < R$ and does not exist an $R''$ such that $R' < R'' < R$ and denote this by $R' \leatom R$. In other words, $R' \leatom R$ if merging two blocks of $R$ can yield $R'$. 
+
+Two extremes or segmentation are when $R = I$ and each consumer is in a unique partition of size one (finest segmentation), and when $R = \one^T$ and all consumers are in the same partition (coarsest segmentation). The optimal price for the coarsest partition is the optimal uniform price, $\tb{p}_0 = \frac{a+c}{2} \one$
+
+Our first result compares the profits under partitions when there is no noise. We show that for all pairs of partitions, when we have full knowledge of the network, using the finer partition is better. When noise isn't an issue, using a finer $R$ allows for a strictly larger feasible region for prices, and the merchant is free to use leverage to this information more fully. Furthermore, when $R'$ covers $R$, we can state the precise amount of change in the profit.
+
+Let $\delta(i,j) \in \mathbb{R}^k$ defined by ${\delta(i,j)}_k = \begin{cases} 1 & \text{ if i=k} \\
+-1 & \text{ if j=k} \\
+0 & \text{ Else } 
+\end{cases}$
+\begin{theorem}
+    Let $R' < R$. Then
+    \[ \Pi( 0, \pricezeroprime) \leq \Pi(0, \pricezero)\]
+
+    In particular, if $R' \leatom R$, then 
+    \[ \Pi(0, \pricezero) -  \Pi(0, \pricezeroprime = \frac{(a-c)^2}{4} \frac{( (\pricezero - \pricezeroprime)^2 }{\delta(i,j)^T W(0,R)^{-1}  \delta(i,j)} \] 
+
+\end{theorem}
+
+The theorem implies that under no noise $R=I$ is the optimal partition. Next, we show the other extreme. When $\alpha = 1$, the merchant knows nothing about the network, the uniform pricing performs the best. This is because there is no structure to exploit, and all nodes are equal in expectation. 
+
+
+\begin{proposition}
+    When $\alpha=1$, the optimal partition matrix is $R = \one^T$ and the optimal price is $\frac{a+c}{2}\one $
+\end{proposition}
+
+From Theorem \ref{thm:noisy-regret}, we pull out the second term and define $L(\alpha, \pricealpha ) \defeq (\delta \tb{p}(\alpha,R))^T W(\alpha,R) (\delta \tb{p}(\alpha, R))$. This term measures the expected regret due to uncertainty in the network. The next result gives an indication of how this regret changes as a function of the choice of partitioning. 
+
+\begin{proposition}
+    Let $R' \leatom R$. Then there exists $\rho > 0$ such that $L(\alpha, \pricealpha) \geq  L(\alpha, \pricealphaprime)$ for all $\alpha$
+\end{proposition}
+The proof of this proposition, which may be found in the appendix, expands the regret into the contribution of walks of each length and shows this is true for the smallest order terms, and the remainder of the higher order terms can be bounded in terms of the lower order terms. The consequence of this result validates the intuition that choosing a finer pricing structure comes at the cost of higher regret due to noise. 
+
+Next, we perform a numerical study to highlight these results. We consider a directed binary tree of height 4 as the base known network and take the noise to be entry-wise i.i.d.  To isolate the impact of uncertainty, we normalize the noise to have the same density as the original network. We simulate 1,000 different samples of noise across uncertainties ranging from zero to one. For each sample, we report the average fractional regret using different levels of coarseness. We include one, two, three, and four level pricing. For this experiment, we set $\rho=0.9, a=6, c=4$.
+Figure~\ref{fig:klevel_numbies} showcases the results. The first panel shows the fractional regret and we see that when noise is low, it is better to use more information. But as the noise increases, the prices that use fewer groups are more volatile. When noise is zero, using 4 levels is best. But soon after, it is better to shift to three levels, two levels, then one level.  We also observe that the fractional regret does not need to be monotonically increasing, as seen in the behavior of two-level pricing. The second panel abstracts away details and shows only how the best pricing level changes on average. This makes it clear that the duration a pricing level is best is not static. Notice also that this curve is continuous. It is continuous because it looks at the average best rank for that noise, but at each individual sample, there is a discrete best pricing level. 
+
+\begin{figure}
+    \centering
+    \subfloat[Fractional Regret of different pricing levels vs uncertainty]{ \includegraphics[width=0.45\textwidth]{Figures/Pricing/klevel/out2.png}
+     }
+     \hfill 
+     \subfloat[Average Optimal Pricing level vs uncertainty ]{
+     \includegraphics[width=0.45\textwidth]{Figures/Pricing/klevel/out1.png}
+     }
+    \caption{a) Fractional Regret vs. noise of various pricing levels. Lower is better. b) How the best pricing level changes with noise.}
+    \label{fig:klevel_numbies}
+\end{figure}
+
+
+\begin{definition}
+
+    The partitioned pricing problem is said to satisfy the interval property if the following holds.
+    Let $(R, p^*(R))$ be an optimal solution then if $i,j$ are in the same community then  dif \[p^*_i > p^*_k > p^*_j \] then k is also a member of this i,j containing community.
+\end{definition}
+
+In essence this property says that the optimal partition can be thought of as seperating the nodes based their optimal price and this partition groups form contingous intervals, that is each group can be described as have all nodes whose price is beteen an upper and lower threshold. Such a property has strong algorithmic implications.  This property allows for a dynamic programming approach that solves the problem exactly in polynomial time in both n and $k$. 
+
+In \cite{candogan2012optimal}, they show that the problem of given two fixed pricing levels, $p_{high}, p_{low}$, then the problem of determining the optimal partition is NP-hard. But the subtlety is that 1) we are solving a joint optimization problem 2) and only making about the properties of optimal solutions. 
+
+
+\subsection{General Results}
+
+Here, we provide insight into when more generally does information matter.  Suppose, we have a family of random networks, $\{G_n\}$, and a for each network we have a price perhaps based on some partial information of the network. Under what conditions is will our pricing be sufficient to achieve negible regret. In answer this below: 
+\begin{theorem}
+    A sequence has neglible fractional regret if and only if \[ \frac{ \ex{ \| \tb{p} - \tb{p}^* \|_{B+B^T} }  }{ \ex{\Pi^*}} \to 0 \] 
+\end{theorem}
+
+This theorem says precisely that the condition for the regret to be small is that the difference in prices grows asymptotically slower than the profit. If we apply this result to uniform precisely we can also answer the question of when is any information necessary. 
+
+\begin{corollary}
+    A sequence of networks has negible fractional regret using uniform pricing if and only if \[ \frac{\ex{ \tb{v}^T (B+B^T)^{-1} \tb{v}} }{\ex{ \one^T B \one } } \to 0 \] 
+\end{corollary}
+
+If this condition is met then there is no value of information on the network. 
+
+We can demonstrate the failure of the interval property through a direct counter-example. 
+
+\section{Numerical experiments}\label{sec:pricing:numerics}
+
+\begin{figure}[t]
+  \centering
+  % \includegraphics[width=0.8\textwidth]{pricing-profit.pdf}
+  \fbox{\parbox[c][1.6in][c]{0.75\textwidth}{\centering Placeholder figure\\
+    \small (replace with \texttt{\textbackslash includegraphics})}}
+  \caption{Profit as a function of partition fineness.}\label{fig:pricing:profit}
+\end{figure}
+
+\Cref{fig:pricing:profit} shows \ldots
+
+
+\section{Discussion}\label{sec:pricing:discussion}
+
+\TODO{Summary of the chapter and a bridge to \cref{ch:misinfo}.}
