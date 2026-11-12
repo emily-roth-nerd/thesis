@@ -41,7 +41,7 @@
 \captionsetup{font=small, labelfont=bf}
 \RequirePackage{booktabs}
 \RequirePackage{tikz}
-\usetikzlibrary{arrows.meta, positioning, bending, calc, shapes}
+\usetikzlibrary{arrows.meta, positioning, bending, calc, shapes, backgrounds, fit}
 \RequirePackage{algorithm, algpseudocode}
 \RequirePackage[shortlabels]{enumitem}
 \setlist{itemsep=2pt, topsep=4pt}
@@ -251,6 +251,68 @@
 
 \newcommand{\bgen}{\ex{B_\mathcal{F}}}
 \newcommand{\Sign}{\mathcal{S}}
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{amsmath}
+\usepackage{longtable}
+% \usepackage{wrapfig}
+\usepackage{bbm}
+%\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{textcomp}
+\usepackage{tikz}
+%\usepackage{minted}
+\usepackage{stackengine}
+%\usepackage{subcaption}
+% \usepackage{subfig}
+\usetikzlibrary{graphs}
+%\usetikzlibrary {graphs.standard}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{color-edits}
+\addauthor{er}{magenta}
+\usepackage{bookmark}
+
+\usepackage{booktabs}
+
+%\setcitestyle{authoryear}
+
+%\usepackage{acm-ec-26}
+\usepackage{mathtools}
+% \usepackage{natbib}
+\usepackage{amssymb}
+\usepackage[margin=1in]{geometry}
+\usepackage{float}
+
+
+\allowdisplaybreaks
+
+\newcommand{\Ha}{H(\alpha)}
+\renewcommand{\S}{S}
+
+\newcommand{\commidx}[2]{\mathcal{C}_{#1}(#2)}
+\newcommand{\comblock}[2]{M_{#1}(#2)}
+%\newcommand{\pricealpha}{\tb{p}^*(H(\alpha), R)}
+%\newcommand{\pricezero}{\tb{p}^*(H(0)^*, R)}
+\newcommand{\pricealpha}{\tb{p}(\alpha,R)}
+\newcommand{\pricezero}{\tb{p}(0,R)}
+
+\newcommand{\pricealphaprime}{\tb{p}(\alpha, R')}
+
+\newcommand{\pricezeroprime}{\tb{p}(0, R')}
+\newcommand{\Bkalpha}{B(\alpha)}
+
+%\settopmatter{ printacmref=true}
+
 
 % \newcommand{\defeq}{\ensuremath{:=}}
 \endinput
