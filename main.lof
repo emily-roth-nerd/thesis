@@ -1,0 +1,13 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Spread of content in a large network, green nodes decide to share the content; red nodes decide not to share the content; (a) false content is less likely to be shared and the spread may go bust (b) true content is slightly more likely to be shared and may end up going viral.}}{8}{figure.caption.11}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Equilibrium in the network. Here $\beta ^\ensuremath {\mathbf {T}}, \beta ^\ensuremath {\mathbf {F}}$ are obtained from $\delta $ through~\eqref {eq:share-probabilities}, and the proportion of true content $\Phi (\beta ^\ensuremath {\mathbf {T}}, \beta ^\ensuremath {\mathbf {F}})$ is given by~\eqref {eq:proportion-true}. An equilibrium corresponds to a value of $\delta $ for which the belief is consistent with spread dynamics.}}{10}{figure.caption.12}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Various quantities of interest and the corresponding equilibrium metrics in the model.}}{13}{figure.caption.13}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces (a) Sensitivity and (b) Specificity in the boom equilibrium as a function of the average veracity $p$ of new content for different values of $\kappa $.}}{15}{figure.caption.14}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces (a) Average veracity of viral content $\delta $, (b) user engagement level, and (c) volume of viral content in the boom equilibrium as a function of the average veracity $p$ of new content for different values of $\kappa $.}}{16}{figure.caption.16}%
+\contentsline {figure}{\numberline {2.6}{\ignorespaces (a) Average veracity of viral content $\delta $, (b) user engagement level, and (c) volume of viral content in the boom equilibrium as a function of the average veracity $p$ of new content for different values of $\kappa $.}}{17}{figure.caption.18}%
+\contentsline {figure}{\numberline {2.7}{\ignorespaces Equilibrium belief as a function of homophily for a variety of $\kappa $}}{25}{figure.caption.21}%
+\contentsline {figure}{\numberline {2.8}{\ignorespaces $q^\ensuremath {\mathbf {T}}$ and $q^\ensuremath {\mathbf {F}}$ }}{26}{figure.caption.22}%
+\contentsline {figure}{\numberline {2.9}{\ignorespaces (a) Sensitivity and (b) Specificity in the boom equilibrium as a function of the average veracity $p$ of new content for different populations. The meaning of each line is as follows: blue diamonds represent $\theta _{PT}=1$, purple triangles are $\theta _{IT}=1$, green circles are $\theta _{PF}=1$, yellow squares are $\theta _{IF}=1$. }}{27}{figure.caption.23}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }

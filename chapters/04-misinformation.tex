@@ -9,20 +9,22 @@ Other recent work explores how groups learn in networks about the state of the w
 ~\cite{mostagir2022learning} studied a setting more similar to ours in that it considers heterogeneous agents for whom both the alignment and veracity matter. In their model, there exists both simple and sophisticated typed agents and they examine the contexts in which one type outperforms the other in learning. An important distinction between all of these works and ours is for the above works agents are learning from a local context, the actions of their neighbors, whereas agents in our model use global information about the average veracity of the content.~\cite{kranton2024social}studies a two stage information sharing setting where a seller chooses to share high or low quality information about its product and consumers then choose to share this information with their peers. The consumers decide to share after forming a belief about the quality given the information from the seller. Like in our work, the true quality of the information is hidden and consumers must make inferences. Unlike their model, we focus on the content sharing game among users within the network and our network equilibria focus on the global spread of different veracity of content. This work explores the phenomenon of peer filtering and the ability of the network as a whole to filter out more false content than true content thus leading to a higher average veracity of true content in the network as compared to content outside the network.
 
 \section{Model}
-We introduce a model for users interacting on an online platform. At a high level, users are shown content and must choose to share or not share that content. Content that is shared is shown to more users who will then face the same decision themselves. We assume that the sharing decisions between users are independent. We now describe the features of the content and the users that will factor into determining if a user shares or not. 
-\textbf{Content Features} We assume that content has some veracity; either true (\true) or false (\false) and the proportion of true content entering the network is $p$. In addition, content is either inclined left or right. 
-\textbf{User Features} Users themselves also have a political inclination. What matters is that if a content-user pair are aligned (\alg) or misaligned (\mal). A pair is aligned if they both share a left-leaning inclination or both share a right-leaning inclination. Otherwise they are misaligned. Users also care about the veracity of content. We assume that, keeping the alignment the same, that all users would at least weakly prefer to share content that is true. Likewise, we assume that keeping the veracity of content the same users would weakly prefer share content that is aligned with them. 
+We introduce a model for users interacting on an online platform. At a high level, users are shown content and must choose to share or not share that content. Content that is shared is shown to more users who will then face the same decision themselves. We assume that each sharing decision is independent from all others. We now describe the features of the content and the users that will factor into determining if a user shares or not. 
 
-This leads us to develop a set of 4 different types of users. All users get positive utility for sharing content that is true and aligned and negative utility for sharing content that is misaligned and false. How they differ is their payouts for content that is aligned but false and misaligned but true. We define the four types of users as follows: 
+\textbf{Content Features} We assume that content has some veracity; either true (\true) or false (\false) and the proportion of true content entering the network is $p$. In addition, content is either inclined left or right. 
+
+\textbf{User Features} Users themselves also have a political inclination. What matters is that if a content-user pair are aligned (\alg) or misaligned (\mal). A pair is aligned if they both share a left-leaning inclination or both share a right-leaning inclination. Otherwise they are misaligned. Users also care about the veracity of content. We assume that, keeping the alignment the same, that all users would at least weakly pr efer to share content that is true. Likewise, we assume that keeping the veracity of content the same users would weakly prefer share content that is aligned with them. 
+
+This leads us to develop a set of 4 different types of users. All users get positive utility for sharing content that is true and aligned and negative utility for sharing content that is misaligned and false. How they differ is their payouts for content that is aligned but false or misaligned but true. We define explicitly the four types of users as follows: 
 \begin{itemize}
-    \item \textbf{Impartial Truthtellers} (\IT) get positive utility from sharing news that is true irrespective of alignment. 
+    \item \textbf{Impartial Truthtellers} (\IT) get positive utility from sharing content that is true irrespective of alignment. 
     \item \textbf{Impartial Fabulists} (\IF) get positive utility from sharing content that is true or aligned. 
-    \item \textbf{Partisan Fabulists} (\PF) get positive utility from sharing content that is aligned. 
-    \item \textbf{Partisan Truthtellers} (\PT) get positive utility from sharing content that is aligned and true. 
+    \item \textbf{Partisan Fabulists} (\PF) get positive utility from sharing content that is aligned regardless of veracity. 
+    \item \textbf{Partisan Truthtellers} (\PT) get positive utility from sharing content that is both aligned and true. 
 \end{itemize}
 
 
-The action of not sharing is normalized to have a utility of 0. But what complicates matters is that while the users see the inclination of content they do directly observe the veracity of the content. Instead, when the ith user receives content $k$, she gets some signal $s_{ik} \in [0,1]$. True signals are distributed i.i.d. by some distribution $F^\true$ and false signals are distributed by some other distribution $F^\false$. We will use $f^\true$, and $f^\false$ to denote the probability density functions of $F^\true$ and  $F^\false$. We assume that $F^\true$ stochastically dominates $F^\false$ so that higher signals are more likely to be true than false.  Although we can generalize later, for now we will assume that the signals have a pdf of 
+The action of not sharing is normalized to have a utility of 0 and the payoff from positive utility sharing to $+1$ and negative utility sharing to $-1$. Users do not have a complete understanding of the content. Instead, when content is consumed they observe how their views align with the content but only indirectly lerans about the veracity. Instead, when the ith user receives content $k$, she gets some signal $s_{ik} \in [0,1]$. True signals are distributed i.i.d. by some distribution $F^\true$ and false signals are distributed by some other distribution $F^\false$. We will use $f^\true$, and $f^\false$ to denote the probability density functions of $F^\true$ and  $F^\false$ respectively. We assume that $F^\true$ stochastically dominates $F^\false$ so that higher signals are more likely to be true than false.  Although we loosen this assumption later, for now we will assume that the signals have a pdf of 
 \[
 f^\true(s) = 2s , f^\false = 2(1-s)
 \]
@@ -35,7 +37,10 @@ In general, users are Bayesian agents with some prior $\delta$ belief about the 
 Following this rule, we know that if the user has a prior of $50\%$, they think content is equally likely to be true or false, then their posterior belief is exactly the signal they received. 
 \section{Single User Behavior}
 
-Each user receives a piece of content, consumes it for a signal, and must make a determination on whether to share it or not. A user will share content exactly if their expected utility is positive and not share otherwise.  We normalize the utility of sharing positive utility content to be $+1$ and the utility of sharing negative utility content to be $-1$. Therefore the expected utility of sharing for each type receiving a signal $x$ is characterized by 
+Each user receives a piece of content, consumes it for a signal, and must make a determination on whether to share it or not. A user will share content exactly if their expected utility is positive and not share otherwise. The expected utility of sharing for each type receiving a signal $x$ is characterized by 
+
+\begin{figure}
+    \centering
 \begin{tabular}{|c|c|c|c|c|}
    \hline 
    &  \IT & \PT & \IF & \PF \\
@@ -44,17 +49,18 @@ Each user receives a piece of content, consumes it for a signal, and must make a
   \mal & $2\hat{\delta} -1$ & $-1$ & $2\hat{\delta} -1$ & $-1$ \\
   \hline 
 \end{tabular}
+\end{figure} 
 
-Notice however that who shares content when $2\hat{\delta} -1 > 0$ shares if and only if $x > 1 - \delta$. 
+A user shares content when the expected value is greater than zero. For some types user and alignment, this is always true or always false. However for others, their best response depends on their posterior belief and the their of the signal they read. In particular, the condition that $2\hat{\delta}-1>0$ is equivalent to the condition that $x > 1- \delta$. 
 
-We can apply this characterization of the probabilities at which a user shares aligned or misaligned content to state the probability with which a user shares content of a given alignment and veracity. We use ${\beta(\delta)}^\alpha_{a,t}$ to be this probability that a with with type t and alignment $a$ shares content with veracity $\alpha$.  It is characterized by 
+We can apply this characterization of the probabilities at which a user shares aligned or misaligned content to state the probability with which a user shares content of a given alignment and veracity. We use ${\beta(\delta)}^\alpha_{a,t}$ to be this probability that a with with type t and alignment $a$ shares content with veracity $\alpha$.  This is the probability, over the signal, that the expected utility is non-negative. It is characterized by 
 \begin{equation}
-    {\beta(\delta)}^\alpha_{a,t} = \begin{cases} 1  & \text{ if t=\IF or \PF and } a=\alg \\
+    {\beta(\delta)}^\alpha_{a,t} = \begin{cases} 1  & \text{ if t=\IF~or \PF~and } a=\alg \\
     0 & \text{if t=\PT or t=\PF and } a=\mal \\ 
-    ?? & \text{Else} \end{cases}
+    \overline{F^{\alpha}}(1-\delta) & \text{Else} \end{cases}
 \end{equation}
 
-
+Where $\overline{F^\alpha}(x) = 1- F^\alpha(x)$, i.e. the compliment of the cdf.  
 Given this sharing behavior across types and the type information of the network we can state the probablity that a user chosen uniformly at random shares true or false content. 
 \begin{equation}\label{eq:share-probabilities}
 \beta^\alpha(\delta) \defeq \sum_{a \in \{\alg, \mal\}} \frac{1}{2} \cdot \sum_{t \in \Theta}  \theta_t  \beta^\alpha_{a, t} = \frac{1}{2} \left(1 - \tt + (\tt+\tm) \overline{\mathrm{F}}_\alpha(1-\delta)  \right), 
@@ -64,6 +70,10 @@ Finally, we state the result that for all prior beliefs $\delta$,  true content 
 
 
 \section{Spread Dynamics}
+
+\todo{Fill in missing piece here}
+
+
 \begin{figure}
  \centering
 \begin{subfigure}{0.25\textwidth}
@@ -79,7 +89,7 @@ Finally, we state the result that for all prior beliefs $\delta$,  true content 
 
 \end{figure}
 
-When the effective branching factor is less than one, almost surely the spread will go extinct or ``bust''. Instead the expected number of users who see a particular piece of content is given by 
+When the effective branching factor is less than one, almost surely the spread will go extinct or ``bust''. Instead, the expected number of users who see a particular piece of content is given by 
 \begin{equation}
     \sum_{\ell=0}^\infty  {\left(\branch\right)}^\ell = \frac{1}{1-\branch }
 \end{equation}
@@ -88,7 +98,7 @@ When it is greater than one however the content may not go extinct. In this cont
     1-q^\alpha = 1 -\beta^\alpha + \beta^\alpha \left( \sum_{\ell=0}^\infty \pi_\ell {\left(1-q^\alpha\right)}^\ell \right)
 \end{equation*}
 
-To interpret this equation as tracking how content could go extinct in two different ways. The first is $1-q^\alpha$, this is definitionally the probability content doesn't go viral. On the right-hand side, we observe content doesn't go viral if it is not shared by the first user, $1-\beta^\alpha$, or it is shared but each descendant branch goes extinct, $\beta^\alpha \left( \sum_{\ell=0}^\infty \pi_\ell {\left(1-q^\alpha\right)}^\ell \right)$.
+To interpret this equation as tracking how content could go extinct in two different ways. The first is $1-q^\alpha$, this is, definitionally, the probability content doesn't go viral. On the right-hand side, we observe content doesn't go viral if it is not shared by the first user, $1-\beta^\alpha$, or it is shared but each descendant branch goes extinct, $\beta^\alpha \left( \sum_{\ell=0}^\infty \pi_\ell {\left(1-q^\alpha\right)}^\ell \right)$.
 
 Applying this logic, we characterize the expected proportion of true content a user actually sees. We assign $\Theta$ to represent this quantity. We separate this into three cases. 
 \textbf{Case 1}: $\branch{\true} \leq \branch{\false} \leq 1 $ 
@@ -97,10 +107,10 @@ In this case, both the spread true and false news die out after a finite number 
 
 
 \textbf{Case 2}:  $\branch[\true] \geq  1 \geq \branch{\false} \leq 1 $ 
-In this case just the true content can go viral. Therefore, the true news dominates and $\theta=1$. This situation is achievable by the correct setting parameters would be ideal for society. 
+In this case just the true content can go viral whereas false content does extinct. Therefore, the true news dominates and $\theta=1$.  
 
 \textbf{Case 3}:  $\branch[\true] >\branch{\false} >  1 $ 
-In this case both true and false content sometimes goes viral. What matters then is their respective probabalities of virality how much true and false content a user observes. That is 
+In this case both true and false content sometimes goes viral. What matters then is their respective probabalities of virality how much true and false content a user observes. That is proportion of true content observed is: 
 \begin{equation}
     \theta = \frac{pq^\true}{pq^\true + (1-p)q^\false } 
 \end{equation}
@@ -115,7 +125,7 @@ The first property is the non-existence of the boom-bust equilbria.
     Every equilbrium of the network is either a boom equilibrium or a bust equilibrium. In particular, the network never admits a boom-bust equilibrium. 
 \end{theorem}
 \begin{proof}
-    We proceed by proof by contradiction. Suppose that we have an equilibrium where $\branch{\true} > 1 > \branch{false}$ then only true content goes viral and $\Theta=1$. Since we have an equilibrium $\Theta = \delta = 1$. But applying this to equation $\ref{eq:share-probabilities}$ we find that $\beta^\true = \beta^\false$ which contradicts $\branch{\true} >\branch{false}$. 
+    We proceed by proof by contradiction. Suppose that we have an equilibrium where $\branch{\true} > 1 > \branch{false}$ then only true content goes viral and $\Theta=1$. Since we have an equilibrium $\Theta = \delta = 1$. But applying this to equation $\ref{eq:share-probabilities}$ we find that $\beta^\true = \beta^\false$ which contradicts $\branch{\true} >\branch{\    false}$. 
 \end{proof}
 
 \begin{figure}
@@ -235,40 +245,6 @@ Finally, we also study the effect of peer-filtering on metrics that are of inter
 
 % \end{wraptable} }
 
-{\small 
-\begin{figure}
-\centering
-\begin{tabular}{ccc} 
-  \toprule
- Quantity  & & Metric \\
- \midrule
- Peer filtering effectiveness &   & ${\delta}/{p}$ \\
-  Sensitivity & & $1- q^\false$\\
- Specificity  & & $q^\true$\\
- Engagement level & & $\delta \beta^\true + (1-\delta) \beta^\false$\\
- Volume &  & $pq^\true + (1-p) q^\false$\\
-  \bottomrule
-\end{tabular}
-\caption{Various quantities of interest and the corresponding equilibrium metrics in the model.}\label{table:metrics}
-
-\end{figure} }
-
-{\small 
-\begin{figure}
-\centering
-\scalebox{0.9}{
-\begin{tabular}{cccccc} 
-  \toprule
-  Quantity & Peer filtering effectiveness & Sensitivity & Specificity & Engagement level & Volume \\
- \midrule
-  Metric & ${\delta}/{p}$  & $1- q^\false$ & $q^\true$ & $\delta \beta^\true + (1-\delta) \beta^\false$ & $pq^\true + (1-p) q^\false$\\
-  \bottomrule
-\end{tabular}
-}
-\caption{Various quantities of interest and the corresponding equilibrium metrics in the model.}\label{table:metrics}
-
-\end{figure}
-}
 To understand the effect these controls have on the spread of true and false content, we  study the \emph{peer filtering effectiveness} (the ratio of true content in the system to incoming true content) as well as the \emph{sensitivity} (fraction of false content filtered out), \emph{specificity} (fraction of true content not filtered out) and \emph{misinformation  level}, i.e., the proportions of true and false content circulating in the network in equilibrium. We examine how the peer-filtering effect depends on the composition of different types of users, informativeness of private signals, average veracity of content, and the spread factor. Alongside the peer-filtering effectiveness, we also study the impact to the \emph{engagement level} (the frequency that content is shared with) and the \emph{volume} of content that goes viral. These metrics are defined in the table above. 
 
 \subsection{Results} 
