@@ -1,34 +1,4 @@
 \chapter{Test}\label{ch:03_fun_with}
-% \section{Introduction}
-
-% \section{Model}
-
-
-% \textbf{List of results}
-
-% \begin{theorem}
-%     Given a partition $R$, the optimal partitioned price is given by $R^T {\left( R (B+B^T) R^T \right) }^{-1} R \tb{v} $ 
-% \end{theorem}
-
-% \begin{theorem}
-%     Using the optimal partitioned price based on $R$ the profit is given by $blah$
-% \end{theorem}
-
-% \begin{proposition}
-%     Using the optimal partitioned price based on $R$  the regret from optimal pricing is $(\tb{p}(R)-\tb{p}^*)^T \tb{W} (\tb{p}(R)-\tb{p}^*)$ 
-% \end{proposition}
-
-% \begin{proposition}
-%     If $R' \leatom R$ then Exact 
-% \end{proposition}
-
-% \begin{proposition}
-%     If $R' < R$ then  Bound 
-% \end{proposition}
-
-% \begin{proposition}
-%     If $R' < R$ then Norm 
-% \end{proposition}
 
 
 
@@ -182,23 +152,6 @@ column contains exactly one entry equal to $1$.
 
 \section{Main results}\label{sec:pricing:results}
 
-\begin{enumerate}
-    \item stochastic block model 
-    \begin{enumerate}
-        \item pricing and profit 
-        \item regret   
-        \item connection to general uncertainty 
-        \item Numerical results 
-    \end{enumerate}
-    \item partitioned prices 
-    \begin{enumerate}
-        \item pricing profit 
-        \item consistency 
-        \item experimental robustness 
-        \item connection to general uncertainty 
-        \item numerical examples 
-    \end{enumerate}
-\end{enumerate}
 
 \begin{theorem}[Constrained optimal price]\label{thm:pricing:optimal}
 Under \cref{ass:spectral}, the optimal price under partition $\Part$ is
@@ -298,6 +251,38 @@ Let $\delta(i,j) \in \mathbb{R}^k$ defined by ${\delta(i,j)}_k = \begin{cases} 1
 \end{theorem}
 
 The theorem implies that under no noise $R=I$ is the optimal partition. Next, we show the other extreme. When $\alpha = 1$, the merchant knows nothing about the network, the uniform pricing performs the best. This is because there is no structure to exploit, and all nodes are equal in expectation. 
+
+We can also note that all partitioned are projections of the optimal price onto subspaces defined by the partition and the network. Let $Proj(B,R) \defeq R^T {\left( R (B+B^T)R^T \right)}^{-1} R (B+B^T)$. Below, we list some of the properties this matrix. 
+\begin{proposition}
+    $Proj(B,R)$ is a projection matrix meaning that 
+    \begin{enumerate}
+        \item $Proj(B,R)^2 = Proj(B,R) = Proj(B,R)^T $
+    \end{enumerate}
+\end{proposition}
+These properties can be easily verified via direct algebra. Furthermore, we can state properties about how $Proj(B,R), Proj(B,R')$ interact if $R' < R$. 
+\begin{proposition}
+    Let $R' < R$ be two partitions. Then $Proj(B, R) Proj(B, R') = Proj(B, R') Proj(B, R) = Proj(B, R') $
+\end{proposition}
+
+That is to say, the projection matrices commute and reduce to the product reduces to the coarser space. Geometrically, this has the intuition that if we have two subspaces $S_1 \subset S_2$ then projecting a vector onto $S_1$ is the same result as projecting onto $S_2$ then $S_1$ and $S_1$ then $S_2$. This last projection is idempotent for any vector already in $S_1$. 
+
+This projection matrix view helps us clarify how prices and profits relate between various partitions. 
+\begin{lemma}
+    The optimal partition price can be expressed as 
+    \[\tb{p}(0,R) = Proj(B,R) (B_B^T)^{-1} (aB+cB^T) \one = Proj(B,R) \tb{p}^*\]
+\end{lemma}
+
+As a corollary, we have that: 
+\begin{corollary}
+    Let $R' < R$ then \[\tb{p}(0,R') = Proj(B, R') Proj(B,R) \tb{p}^* = Proj(B, R') \tb{p}(0,R)\]
+\end{corollary}
+
+The regrets can then be written as follows: 
+\begin{corollary}
+    Let $R' < R$ then regret of using $R'$ instead of $R$ is $\langle d, d\rangle_{B+B^T}$ where $d = \tb{p}(0,R) - \tb{p}(0,R') = \left( Proj(B, R) - Proj(B,R') \right) \tb{p}^*$.  
+\end{corollary}
+
+
 
 
 \begin{proposition}
