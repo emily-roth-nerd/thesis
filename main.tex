@@ -8,7 +8,7 @@
 %% ---------------------------------------------------------------------
 %%  Draft switches — comment out for the final version
 %% ---------------------------------------------------------------------
-\drafttrue                   % shows \todo notes and a "DRAFT" footer
+\drafttrue{}                  % shows \todo notes and a "DRAFT" footer
 
 %% ---------------------------------------------------------------------
 %%  Title-page information
@@ -26,9 +26,10 @@
 
 \begin{document}
 
+
 %% ----------------------------- Front matter --------------------------
 \frontmatter
-\maketitlepage
+\maketitlepage{}
 \input{frontmatter/abstract}
 \input{frontmatter/acknowledgments}
 \tableofcontents
@@ -37,7 +38,7 @@
 \input{frontmatter/notation}
 
 %% ------------------------------ Main matter --------------------------
-\mainmatter
+\mainmatter{}
 \include{chapters/01-introduction}
 \include{chapters/02-pricing}
 \include{chapters/03-fun_with_partitions}
@@ -45,11 +46,11 @@
 \include{chapters/05-conclusion}
 
 %% ------------------------------ Back matter --------------------------
-\backmatter
+\backmatter{}
 \bibliographystyle{plainnat}  % or: chicago, apalike, ecta (if you have ecta.bst)
 \bibliography{references}
 
-\appendixmatter
+\appendixmatter{}
 \include{chapters/A-proofs}
 
 \end{document}
