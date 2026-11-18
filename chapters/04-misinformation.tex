@@ -38,7 +38,7 @@
 % Each user receives a piece of content, consumes it for a signal, and must make a determination on whether to share it or not. A user will share content exactly if their expected utility is positive and not share otherwise.  We normalize the utility of sharing positive utility content to be $+1$ and the utility of sharing negative utility content to be $-1$. Therefore the expected utility of sharing for each type receiving a signal $x$ is characterized by 
 % \begin{tabular}{|c|c|c|c|c|}
 %    \hline 
-%    &  \IT & \PT & \IF & \PF \\
+%    &  \IT & \PT & \IF{}& \PF{}\\
 %    \hline 
 %   \alg & $2\hat{\delta} -1$ & $2\hat{\delta} -1$ & $1$ & $1$ \\
 %   \mal & $2\hat{\delta} -1$ & $-1$ & $2\hat{\delta} -1$ & $-1$ \\
@@ -49,8 +49,8 @@
 
 % We can apply this characterization of the probabilities at which a user shares aligned or misaligned content to state the probability with which a user shares content of a given alignment and veracity. We use ${\beta(\delta)}^\alpha_{a,t}$ to be this probability that a with with type t and alignment $a$ shares content with veracity $\alpha$.  It is characterized by 
 % \begin{equation}
-%     {\beta(\delta)}^\alpha_{a,t} = \begin{cases} 1  & \text{ if t=\IF or \PF and } a=\alg \\
-%     0 & \text{if t=\PT or t=\PF and } a=\mal \\ 
+%     {\beta(\delta)}^\alpha_{a,t} = \begin{cases} 1  & \text{ if t=\IF{}or \PF{}and } a=\alg \\
+%     0 & \text{if t=\PT or t=\PF{}and } a=\mal \\ 
 %     ?? & \text{Else} \end{cases}
 % \end{equation}
 
@@ -592,7 +592,7 @@
  Recent literature has explored strategic models to study the spread of misinformation in networks~\cite{sikder2020minimalistic, acemoglu2021model, jackson2022learning,mostagir2023social,bloch2018rumors, kranton2024social}. The ones closest to our work include~\cite{jackson2022learning, acemoglu2021model}. In particular,~\cite{acemoglu2021model} presents a model of agents homogeneous in prior beliefs and preferences to study the extent of misinformation in networks. We consider heterogeneity in agent preferences. In~\cite{jackson2022learning}, content is shared but mutates with each exchange, and users observing the history of the spread seek to learn about the veracity of the mutated content. In our work, users' prior beliefs are a product of differing spread dynamics for true and false content, and posterior beliefs are updated using users' private signals. Thus, our model allows us to capture the information aggregation and peer filtering phenomena absent in earlier work.
 Other recent work explores how groups in networks learn about the state of the world.~\cite{huang2024learning} studied a setting where users repeatedly and strategically share information with their peers about the state of the world. They studied how the speed of learning is affected by the network structure.~\cite{dasaratha2019aggregative} studied a setting where agents express how likely it is that a particular piece of content is true based on a private signal and the actions of their neighbors. They showed that there was a confounding effect where one agent can have an outsized impact on another by influencing multiple peers. Like our model, these works consider Bayesian agents taking sequential actions in a social network, but unlike our model, they consider homogeneous user populations and do not make use of heterogeneous agents with differing types and  behaviors.  
 
-\cite{mostagir2022learning} studied a setting more similar to ours in that it considers heterogeneous agents for whom both the alignment and veracity matter. In their model, there exist both simple and sophisticated agent types, and they examine the contexts in which one type outperforms the other in learning. An important distinction between all of these works and ours is that in the above works, agents learn from a local context (the actions of their neighbors), whereas agents in our model use global information about the average veracity of the content.~\cite{kranton2024social} studies a two-stage information sharing setting where a seller chooses to share high- or low-quality information about its product and consumers then choose to share this information with their peers. The consumers decide to share after forming a belief about the quality given the information from the seller. As in our work, the true quality of the information is hidden and consumers must make inferences. In contrast, we focus on the content sharing game among users within the network and our network equilibria focus on the global spread of content of differing veracity. This work explores the phenomenon of peer filtering and the ability of the network as a whole to filter out more false content than true content, thus leading to a higher average veracity of true content in the network as compared to content outside the network.
+~\cite{mostagir2022learning} studied a setting more similar to ours in that it considers heterogeneous agents for whom both the alignment and veracity matter. In their model, there exist both simple and sophisticated agent types, and they examine the contexts in which one type outperforms the other in learning. An important distinction between all of these works and ours is that in the above works, agents learn from a local context (the actions of their neighbors), whereas agents in our model use global information about the average veracity of the content.~\cite{kranton2024social} studies a two-stage information sharing setting where a seller chooses to share high- or low-quality information about its product and consumers then choose to share this information with their peers. The consumers decide to share after forming a belief about the quality given the information from the seller. As in our work, the true quality of the information is hidden and consumers must make inferences. In contrast, we focus on the content sharing game among users within the network and our network equilibria focus on the global spread of content of differing veracity. This work explores the phenomenon of peer filtering and the ability of the network as a whole to filter out more false content than true content, thus leading to a higher average veracity of true content in the network as compared to content outside the network.
 
 \section{Model}
 We introduce a model for users interacting on an online platform. At a high level, users are shown content and must choose to share or not share that content. Content that is shared is shown to more users who will then face the same decision themselves. We assume that the sharing decisions between users are independent. We now describe the features of the content and the users that will factor into determining whether a user shares. 
@@ -608,10 +608,10 @@ This leads us to develop a set of four different types of users. All users get p
 \end{itemize}
 
 
-The action of not sharing is normalized to have a utility of 0. What complicates matters is that while users see the inclination of the content, they do not directly observe its veracity. Instead, when the $i$th user receives content $k$, she gets some signal $s_{ik} \in [0,1]$. True signals are distributed i.i.d. according to some distribution $F^\true$, and false signals are distributed according to some other distribution $F^\false$. We will use $f^\true$ and $f^\false$ to denote the probability density functions of $F^\true$ and  $F^\false$. We assume that $F^\true$ stochastically dominates $F^\false$ so that higher signals are more likely to be true than false.  Although we can generalize later, for now we will assume that the signals have pdfs 
+The action of not sharing is normalized to have a utility of 0. What complicates matters is that while users see the inclination of the content, they do not directly observe its veracity. Instead, when the $i$th user receives content $k$, she gets some signal $s_{ik} \in [0,1]$. True signals are distributed i.i.d.\  according to some distribution $F^\true$, and false signals are distributed according to some other distribution $F^\false$. We will use $f^\true$ and $f^\false$ to denote the probability density functions of $F^\true$ and  $F^\false$. We assume that $F^\true$ stochastically dominates $F^\false$ so that higher signals are more likely to be true than false.  Although we can generalize later, for now we will assume that the signals have pdfs 
 \[
 f^\true(s) = 2s , f^\false = 2(1-s).
-\].
+\]
 
 In general, users are Bayesian agents with some prior belief $\delta$ about the veracity of content. Later, we will describe how this $\delta$ is endogenous to the model. Given a prior and a signal $s_{ik}$, a user's belief that a piece of content is true, $\alpha_k$, follows from Bayes' rule. 
 \begin{equation}
@@ -619,24 +619,28 @@ In general, users are Bayesian agents with some prior belief $\delta$ about the 
 \end{equation}
 
 Following this rule, we know that if the user has a prior of $50\%$ (i.e., they think content is equally likely to be true or false), then their posterior belief is exactly the signal they received. 
-\section{Single User Behavior}
+\section{Single User Behavior}\label{sec:user_behavior}
 
 Each user receives a piece of content, consumes it for a signal, and must make a determination on whether to share it or not. A user will share content exactly if their expected utility is positive and not share otherwise.  We normalize the utility of sharing positive utility content to be $+1$ and the utility of sharing negative utility content to be $-1$. Therefore, the expected utility of sharing for each type receiving a signal $x$ is characterized by: 
-\begin{tabular}{|c|c|c|c|c|}
-   \hline 
-   &  \IT & \PT & \IF & \PF \\
-   \hline 
-  \alg & $2\hat{\delta} -1$ & $2\hat{\delta} -1$ & $1$ & $1$ \\
-  \mal & $2\hat{\delta} -1$ & $-1$ & $2\hat{\delta} -1$ & $-1$ \\
-  \hline 
+
+\begin{figure} 
+    \centering 
+\begin{tabular}{ccccc}
+   \toprule 
+   &  \IT{} & \PT{} & \IF{} & \PF{} \\
+   \midrule
+  \alg{} & $2\hat{\delta} -1$ & $2\hat{\delta} -1$ & $1$ & $1$ \\
+  \mal{} & $2\hat{\delta} -1$ & $-1$ & $2\hat{\delta} -1$ & $-1$ \\
+  \bottomrule
 \end{tabular}
+\end{figure}
 
 Notice, however, that a user who shares content when $2\hat{\delta} -1 > 0$ shares if and only if $x > 1 - \delta$. 
 
 We can apply this characterization of the probabilities at which a user shares aligned or misaligned content to state the probability with which a user shares content of a given alignment and veracity. We use ${\beta(\delta)}^\alpha_{a,t}$ to denote the probability that a user with type $t$ and alignment $a$ shares content with veracity $\alpha$.  It is characterized by 
 \begin{equation}
-    {\beta(\delta)}^\alpha_{a,t} = \begin{cases} 1  & \text{ if t=\IF or \PF and } a=\alg \\
-    0 & \text{if t=\PT or t=\PF and } a=\mal \\ 
+    {\beta(\delta)}^\alpha_{a,t} = \begin{cases} 1  & \text{ if t=\IF{}or \PF{}and } a=\alg \\
+    0 & \text{if t=\PT{} or t=\PF{}and } a=\mal \\ 
     ?? & \text{Else} \end{cases}
 \end{equation}
 
@@ -649,13 +653,13 @@ Given this sharing behavior across types and the type information of the network
 Finally, we state the result that for all prior beliefs $\delta$,  true content is preferred over false content. 
 
 
-\section{Spread Dynamics}
+\section{Spread Dynamics}\label{sec:spread-equilibrium}
 To analyze the spread dynamics in the network, suppose users in the network share content of veracity $\alpha$ with fixed probability $\beta^\alpha$. Given the preceding analysis of a single user's behavior, we assume that $\beta^\true \geq \beta^\false$. Next, suppose a piece of content with veracity $\alpha$ is introduced at time $0$ in the network. The number of users $X^{\alpha}(\tau)$ that see the content for the first time at time $\tau$ is random and depends on how many users choose to share the content at time $\tau - 1$. We have $X^\alpha(0) = 1$, and given the assumptions on the spread dynamics, we have $X^\alpha(1) = \kappa$ if the user chooses to share the content; otherwise, $X^\alpha(1) = 0$. In general, we have 
 \begin{align} \label{eq:branching_process}
     X^{\alpha}(\tau + 1) =\sum_{i= 1}^{X^{\alpha}(\tau)} {\kappa \cdot Z_i}
 \end{align} 
-where $Z_i$ is the indicator variable which takes value $1$ if the $i^{th}$ user among the $X^{\alpha}(\tau)$ users exposed to the content at time $\tau$ chooses to share the content. The analysis of the single user behavior in the preceding section shows that $Z_i = 1$ with probability $\beta^{\alpha}$ for a randomly chosen user. Thus, we conclude that the conditional distribution of $X^{\alpha}(\tau + 1)$ given $X^{\alpha}(\tau)$ is $\kappa$ times a Binomial random variable with parameters $X^{\alpha}(\tau)$ and $\beta^{\alpha}$. Thus, $X^{\alpha}(\tau)$ follows a Galton--Watson branching process. %~\cite{athreya2004branching} 
-Furthermore, the expected number of users who observe the content for the first time at time $\tau$ is given by $\ex{X^\alpha(\tau)} = (\kappa \beta^\alpha)^\tau$. As we describe below, the dynamics of this process are captured by $\kappa\beta^{\alpha}$, called its {\em branching rate}.
+where $Z_i$ is the indicator variable which takes value $1$ if the $i^{th}$ user among the $X^{\alpha}(\tau)$ users exposed to the content at time $\tau$ chooses to share the content. The analysis of the single user behavior in the preceding section shows that $Z_i = 1$ with probability $\beta^{\alpha}$ for a randomly chosen user. Thus, we conclude that the conditional distribution of $X^{\alpha}(\tau + 1)$ given $X^{\alpha}(\tau)$ is $\kappa$ times a Binomial random variable with parameters $X^{\alpha}(\tau)$ and $\beta^{\alpha}$. Thus, $X^{\alpha}(\tau)$ follows a Galton-Watson branching process. %~\cite{athreya2004branching} 
+Furthermore, the expected number of users who observe the content for the first time at time $\tau$ is given by $\ex{X^\alpha(\tau)} = {(\kappa \beta^\alpha)}^\tau$. As we describe below, the dynamics of this process are captured by $\kappa\beta^{\alpha}$, called its {\em branching rate}.
 
 
 If the branching rate $\kappa \beta^\alpha$ is strictly less than $1$, the process eventually equals zero, meaning that the users eventually stop sharing the content. In this case, the total expected number of users who see the content is finite and is given by
@@ -663,13 +667,13 @@ If the branching rate $\kappa \beta^\alpha$ is strictly less than $1$, the proce
 % \sum_{\tau =0}^\infty (\kappa \beta^\alpha)^\tau = \frac{1}{1-\kappa \beta^\alpha}. &&
 % \end{flalign}
 \begin{align}\label{eq:expected_spread}
-\sum_{\tau =0}^\infty (\kappa \beta^\alpha)^\tau = \frac{1}{1-\kappa \beta^\alpha}. &&
+\sum_{\tau =0}^\infty {(\kappa \beta^\alpha)}^\tau = \frac{1}{1-\kappa \beta^\alpha}. &&
 \end{align}
 On the other hand, if the branching rate is strictly greater than $1$, then with positive probability the process never equals zero, implying that the content is shared throughout the network, i.e., the content goes ``viral''. The probability $q^\alpha$ with which the content goes viral is obtained as the largest solution in $[0,1]$ to the following extinction equation:
 \begin{align} \label{eq:viral-prob}
-    1- q^{\alpha} = 1-\beta^{\alpha} + \beta^{\alpha}(1 - q^{\alpha})^{\kappa}. &&
+    1- q^{\alpha} = 1-\beta^{\alpha} + \beta^{\alpha}{(1 - q^{\alpha})}^{\kappa}. &&
 \end{align}
-To interpret the equation, the left-hand side denotes the probability that the content does not go viral. This can only happen if either (1) the first user decides not to share the content (which happens with probability $1-\beta^\alpha$) or (2) the first user shares the content (an event with probability $\beta^\alpha$) but none of the $\kappa$ subprocesses originating from the $\kappa$ peers to whom the content is shared go viral (which occurs with probability $(1-q^\alpha)^\kappa$).
+To interpret the equation, the left-hand side denotes the probability that the content does not go viral. This can only happen if either (1) the first user decides not to share the content (which happens with probability $1-\beta^\alpha$) or (2) the first user shares the content (an event with probability $\beta^\alpha$) but none of the $\kappa$ subprocesses originating from the $\kappa$ peers to whom the content is shared go viral (which occurs with probability ${(1-q^\alpha)}^\kappa$).
 
 \begin{figure}
  \centering
@@ -682,7 +686,7 @@ To interpret the equation, the left-hand side denotes the probability that the c
  \includegraphics[width=\textwidth]{Figures/network_spread.pdf}
  \caption{}
 \end{subfigure}
-\caption{Spread of content in a large network. Green nodes decide to share the content; red nodes decide not to share it. (a) False content is less likely to be shared, and the spread may go bust. (b) True content is slightly more likely to be shared and may end up going viral.}\label{fig:spread-dynamics}
+\caption{Spread of content in a large network. Green nodes decide to share the content; red nodes decide not to share it.\ (a) False content is less likely to be shared, and the spread may go bust.\ (b) True content is slightly more likely to be shared and may end up going viral.}\label{fig:spread-dynamics}
 
 \end{figure}
 
@@ -755,7 +759,7 @@ The first property is the non-existence of boom-bust equilibria.
 Our next result is that, in any equilibrium, $\delta$ is lower bounded by the incoming veracity of content. 
 \begin{theorem}
     In any equilibrium, $\delta \geq p$.
-\end{theorem}
+\end{theorem}\label{thm:delta_geq_p}
 
 Equality can be realized in a system where all users are partisan fabulists ($\theta_{PF} = 1$). This is because all users are agnostic about the veracity of content; they only care about alignment. We think of how much greater $\delta$ is than $p$ through the lens of the network, viewing users' sharing decisions as a filtering mechanism for content. When much more true content is seen by users, we say that the network is an effective filter. The reason that peers can act as a filter on veracity is that all types at least weakly prefer true content over false content; hence, true content is more likely to be shared and seen by more users.  Later in this work, we will discuss what properties of the network promote more effective peer filtering with an eye towards how a platform could promote networks that have greater peer-filtering effectiveness. First, however, we discuss the properties of the other two types of equilibria. 
 
@@ -768,7 +772,7 @@ Theorem~\ref{thm:equilibria-existence} below states first that the condition for
         \item $\kappa \in \left(\frac{2}{1+\tm} , \kappa(\gamma) \right)$ and $\gamma < \frac{1}{2}$ (two bust equilibria exist);
         \item $\kappa = \kappa(\gamma)$ and $\gamma < \frac{1}{2}$ (a unique bust equilibrium exists),
     \end{itemize}
-    where $\gamma \defeq \frac{p}{1-p}$. Otherwise, there exists no bust equilibrium. Here, \[\kappa(\gamma) \defeq \frac{2 (\gamma-1) (\gamma+1)^3}{\gamma^4 (\tm+1)+\gamma^3 (-6 \tm-8 \tt+2)+12 \gamma^2 (\tm+\tt)-2 \gamma (4 \tm+3 \tt+1)+\tt-1}.\]
+    where $\gamma \defeq \frac{p}{1-p}$. Otherwise, there exists no bust equilibrium. Here, \[\kappa(\gamma) \defeq \frac{2 (\gamma-1) (\gamma+1^)3}{\gamma^4 (\tm+1)+\gamma^3 (-6 \tm-8 \tt+2)+12 \gamma^2 (\tm+\tt)-2 \gamma (4 \tm+3 \tt+1)+\tt-1}.\]
 \end{theorem}
 
 
@@ -794,24 +798,7 @@ Now that we have developed the techniques to characterize the equilibria, we foc
 % %When the level of misinformation in the network is low the users weigh their private information less and are more engaged in sharing the content. This allows false information to easily sneak in and go viral. 
 
 \subsection{Metrics}
-{\small 
-\begin{figure}[htbp]
-\centering
-\begin{tabular}{ccc} 
-  \toprule
- Quantity  & & Metric \\
- \midrule
- Peer filtering effectiveness &   & ${\delta}/{p}$ \\
-  Sensitivity & & $1- q^\false$\\
- Specificity  & & $q^\true$\\
- Engagement level & & $\delta \beta^\true + (1-\delta) \beta^\false$\\
- Volume &  & $pq^\true + (1-p) q^\false$\\
-  \bottomrule
-\end{tabular}
-\caption{Various quantities of interest and the corresponding equilibrium metrics in the model.}\label{table:metrics}
 
-
-\end{figure} }
 To understand the effect these controls have on the spread of true and false content, we  study the \emph{peer filtering effectiveness} (the ratio of true content in the system to incoming true content) as well as the \emph{sensitivity} (fraction of false content filtered out), \emph{specificity} (fraction of true content not filtered out), and \emph{misinformation level}, i.e., the proportions of true and false content circulating in the network in equilibrium. We examine how the peer-filtering effect depends on the composition of different types of users, informativeness of private signals, average veracity of content, and the spread factor. Alongside the peer-filtering effectiveness, we also study the impact on the \emph{engagement level} (the frequency with which content is shared) and the \emph{volume} of content that goes viral. These metrics are defined in the table above. 
 
 
@@ -842,23 +829,7 @@ Finally, we also study the effect of peer-filtering on metrics that are of inter
 
 % \end{wraptable} }
 
-{\small 
-\begin{figure}
-\centering
-\begin{tabular}{ccc} 
-  \toprule
- Quantity  & & Metric \\
- \midrule
- Peer filtering effectiveness &   & ${\delta}/{p}$ \\
-  Sensitivity & & $1- q^\false$\\
- Specificity  & & $q^\true$\\
- Engagement level & & $\delta \beta^\true + (1-\delta) \beta^\false$\\
- Volume &  & $pq^\true + (1-p) q^\false$\\
-  \bottomrule
-\end{tabular}
-\caption{Various quantities of interest and the corresponding equilibrium metrics in the model.}\label{table:metrics}
 
-\end{figure} }
 
 {\small 
 \begin{figure}
@@ -925,24 +896,24 @@ We perform a numerical analysis on a population consisting of equal parts of all
 %     \caption{Caption}
 %     \label{fig:misinformation_engagement_volume}
 % \end{figure}
-\begin{figure}
-\centering
-\begin{subfigure}{0.3\textwidth}
-    \includegraphics[width = \textwidth]{Figures/p_vs_delta.pdf}
-    \caption{}
-\end{subfigure}
-\vspace{1em}
-\begin{subfigure}{0.3\textwidth}
-    \includegraphics[width = \textwidth]{Figures/engage.pdf}
-    \caption{}
-\end{subfigure}
-\vspace{1em}
-\begin{subfigure}{0.3\textwidth}
-    \includegraphics[width = \textwidth]{Figures/volume.pdf}
-    \caption{}
-\end{subfigure}
-    \caption{(a) Average veracity of viral content $\delta$, (b) user engagement level, and (c) volume of viral content in the boom equilibrium as a function of the average veracity $p$ of new content for different values of $\kappa$.}
-\end{figure}\label{fig:misinformation_engagement_volume}
+% \begin{figure}
+% \centering
+% \begin{subfigure}{0.3\textwidth}
+%     \includegraphics[width = \textwidth]{Figures/p_vs_delta.pdf}
+%     \caption{}
+% \end{subfigure}
+% \vspace{1em}
+% \begin{subfigure}{0.3\textwidth}
+%     \includegraphics[width = \textwidth]{Figures/engage.pdf}
+%     \caption{}
+% \end{subfigure}
+% \vspace{1em}
+% \begin{subfigure}{0.3\textwidth}
+%     \includegraphics[width = \textwidth]{Figures/volume.pdf}
+%     \caption{}
+% \end{subfigure}
+%     \caption{(a) Average veracity of viral content $\delta$, (b) user engagement level, and (c) volume of viral content in the boom equilibrium as a function of the average veracity $p$ of new content for different values of $\kappa$.}
+% \end{figure}\label{fig:misinformation_engagement_volume}
 
 Figure~\ref{fig:sensitivity_specificity} (a) shows the sensitivity and Figure~\ref{fig:sensitivity_specificity} (b) shows the specificity as a function of the average new content veracity $p$ (i.e., the fraction of true content entering the system) for different spread factors $\kappa$. Sensitivity decreases and specificity increases with $p$ because, with increasing $p$, users' beliefs about the veracity of the content increase, and they are more likely to share the content, thus increasing the virality of both true and false content. For $\kappa \geq 2$, the sensitivity/specificity is very high/low for small $p$ because almost all content is never shared and is very low/high for high $p$ because almost all content is always shared. Given these parameters, $\kappa = 4/3$ is the critical value at which the boom equilibrium emerges. At this value of $\kappa$, the sensitivity is almost $1$ and specificity is $0$ because a negligible fraction of the content goes viral irrespective of the average new content veracity. Sensitivity decreases as $\kappa$ increases, due to a higher number of shares leading to a higher likelihood of virality for all content. However, specificity is non-monotonic in $\kappa$ for low average new content veracity. Increasing $\kappa$ by a small amount above the critical value of $\frac{4}{3}$ gives a big boost to specificity, but increasing it further decreases specificity. This effect is especially important because the sensitivity does not decrease significantly with $\kappa$ for low values of average new content veracity. Thus, by appropriately choosing $\kappa$, even for very low values of average new content veracity, the peer-filtering effect can be kept very high, eliminating a large fraction of false content while allowing a significant fraction of true content to go viral. When the average new content veracity is high, specificity is increasing in $\kappa$. For this analysis, we made a conservative assumption that only a quarter of the population are impartial truthtellers and only half are truthtellers. The critical $\kappa$ is lower bounded by $1$ but would increase with the increasing fraction of partisan and impartial truthtellers in the population, suggesting that higher values of $\kappa$ can be sustained with high sensitivity and specificity.
 

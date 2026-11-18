@@ -115,7 +115,7 @@ The proof follows from expanding the profit function in terms of the profit the 
 
 % \am{Here state that when there is no network information then one can  assume that all topologies are equally likely and the expected graph as well as $E[B_F]$ is symmetric. Therefore the uniform price is optimal.}
 
-On one extreme of what information the merchant might have about the network is the case where the merchant lacks any information about the network whatsoever. When the merchant lacks any information about the network, we assume all network topologies are equally likely. This means that  $\ex{B_\mathcal{F}}$ is symmetric. From~\cite{huang2022value}, this meets the condition for the optimal price vector to be uniform, or equivalently all consumers are charged the same price. A sufficient condition for e optimal price to be uniform is that for all integers  $\ell > 0, {({G^T})}^{\ell} \one = G^\ell \one$\cite{huang2022value}. That is, for all nodes, the number of incoming walks of length $\ell$ is equal to the number of outgoing walks of length $\ell$. Therefore, $\ex{B_\mathcal{F}}$ being symmetric is sufficient to establish that the optimal price is one uniform price. We state this formally in the following Proposition.
+On one extreme of what information the merchant might have about the network is the case where the merchant lacks any information about the network whatsoever. When the merchant lacks any information about the network, we assume all network topologies are equally likely. This means that  $\ex{B_\mathcal{F}}$ is symmetric. From~\cite{huang2022value}, this meets the condition for the optimal price vector to be uniform, or equivalently all consumers are charged the same price. A sufficient condition for e optimal price to be uniform is that for all integers  $\ell > 0, {({G^T})}^{\ell} \one = G^\ell \one~$\cite{huang2022value}. That is, for all nodes, the number of incoming walks of length $\ell$ is equal to the number of outgoing walks of length $\ell$. Therefore, $\ex{B_\mathcal{F}}$ being symmetric is sufficient to establish that the optimal price is one uniform price. We state this formally in the following Proposition.
 % Given such, we can charge everyone just one price, which we will call the uniform price. This price has a simple form: 
 
 % \am{Shouldn't this be optimal expected profit?}
@@ -135,32 +135,17 @@ Since this price is optimal, it has zero expected regret. Note that in this Prop
 
 We note that it may seem odd that under no network information the expected regret is zero under uniform pricing. This is because the benchmark optimal pricing is itself uniform. With partial information this would change because additional structure in the network needs to be accounted for while computing optimal prices. That is, there is a regret for not having the full network information. 
 
-
-
-
-
-
-
-\begin{assumption}[Spectral condition]\label{ass:spectral}
-$\gamma\,\spec(\Galpha) < 1$ for all $\alpha \in [0,1]$.
-\end{assumption}
-
-\begin{definition}[Partition matrix]\label{def:partition}
-A matrix $\Part \in {\{{0,1}\}}^{k \times n}$ is a \emph{partition matrix} if each
-column contains exactly one entry equal to $1$.
-\end{definition}
-
 \section{Main results}\label{sec:pricing:results}
 
 
-\begin{theorem}[Constrained optimal price]\label{thm:pricing:optimal}
-Under \cref{ass:spectral}, the optimal price under partition $\Part$ is
-\begin{equation}
-  \pstar(\Part, \Res) = \Part\T {\bigl(\Part M \Part\T\bigr)}^{-1} \Part\,
-  \bigl(a \Res + c \Res\T\bigr) \one .
-  \label{eq:pricing:optimal}
-\end{equation}
-\end{theorem}
+% \begin{theorem}[Constrained optimal price]\label{thm:pricing:optimal}
+% Under \cref{ass:spectral}, the optimal price under partition $\Part$ is
+% \begin{equation}
+%   \pstar(\Part, \Res) = \Part\T {\bigl(\Part M \Part\T\bigr)}^{-1} \Part\,
+%   \bigl(a \Res + c \Res\T\bigr) \one .
+%   \label{eq:pricing:optimal}
+% \end{equation}
+% \end{theorem}
 We now consider the case when community structure and membership is unavailable but a noisy network information is available.  Suppose that the ground truth network is comprised of two parts: observed interactions and noise. The comparative strength between these two networks is controlled by a factor $\alpha$, which denotes the amount of uncertainty. That is, the network adjacency matrix has the form
 \[ H(\alpha) \defeq (1-\alpha) G + \alpha N,\]
 
@@ -184,7 +169,10 @@ However, it often not possible to know $\alpha$. When the merchant does not know
 \begin{theorem}\label{thm:noisy-regret}
       Let $R$ be a fixed partition and assume the noise level is $\alpha$.
       Then the expected profit of k-level pricing $\pricezero$ is:
-     \[ \Pi(\alpha, \pricezero) = \frac{(a-c)^2}{4} \ex{ \tb{v}(\alpha,R)^T W(\alpha,R)^{-1} \tb{v}(\alpha,R)} - \frac{1}{4} \ex{(\delta \tb{p}(\alpha,R))^T (\Bkalpha) + \Bkalpha)^T) (\delta \tb{p} (\alpha,R)) } \]
+      \begin{align*}
+        \Pi(\alpha, \pricezero) &= \frac{(a-c)^2}{4} \ex{ \tb{v}(\alpha,R)^T W(\alpha,R)^{-1} \tb{v}(\alpha,R)}\\
+        & - \frac{1}{4} \ex{(\delta \tb{p}(\alpha,R))^T (\Bkalpha) + \Bkalpha)^T) (\delta \tb{p} (\alpha,R)) }
+      \end{align*}
       % \begin{align}
       %     \frac{\| P(G,R, \alpha) \tb{u}(G,\alpha)\|^2}{8}
       % \end{align}
