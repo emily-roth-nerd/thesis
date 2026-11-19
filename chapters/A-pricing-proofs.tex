@@ -1,0 +1,551 @@
+\section{Proofs for Section \ref{sec:part_info}}
+
+\subsection{Proof of Proposition \ref{prop:partial_info}} \label{proof:partial_info}
+\begin{proof}
+Let arbitrary network G with $B = (I - 2\rhof G)^{-1}  $  and $\ev{B} = \ev{ [ (I - 2\rhof G)^{-1} | \mathcal{I} ]}$. Then we first compute the profit using $\tb{p}$ based on the expected network applied to a random variable.l 
+\begin{align*}
+    \frac{1}{2} (\bp^* - c\bo)^T B (a\bo - \bp^*) &= \frac{1}{2}(\frac{a+c}{2} \bo + \frac{a-c}{2} ({\ev{B}} + {\ev{B}}^T)^{-1} ({\ev{B}} - {\ev{B}}^T)\bo - c\bo)^T B (a\bo - \bp^*)\\
+    &= \frac{1}{2}\frac{a-c}{2} (\bo +  ({\ev{B}} + {\ev{B}}^T)^{-1} ({\ev{B}} - {\ev{B}}^T)\bo - c\bo)^T\\
+    & B (a\bo - \frac{a-c}{2}  ({\ev{B}} + {\ev{B}}^T)^{-1} ({\ev{B}} - {\ev{B}}^T)\bo - c\bo)\\
+    &= \frac{(a-c)^2}{8}(\bo + ({\ev{B}} + {\ev{B}}^T)^{-1} ({\ev{B}} - {\ev{B}}^T)\bo)^T B\\&\cdot (\bo - ({\ev{B}} + {\ev{B}}^T)^{-1} ({\ev{B}}- {\ev{B}}^T)\bo)
+\end{align*}
+
+This is a random variable as B is random. Next, we take the expectation via a sum over discrete networks $\{G\}$ that could be generated and let $\alpha_i$ be the probability that $G_i$ is the true network. 
+\begin{align*}
+    \ex{ \Pi } &= \frac{(a-c)^2)}{8} \sum_{i} \alpha_i (\bo + ({\ev{B}} + {\ev{B}}^T)^{-1} ({\ev{B}} - {\ev{B}}^T)\bo)^T B_i\\&\cdot (\bo - ({\ev{B}} + \ev{B}^T)^{-1} (\ev{B}- {\ev{B}}^T)\bo) \\
+    &= \frac{(a-c)^2)}{8} (\bo + ({\ev{B}} + {\ev{B}}^T)^{-1} ({\ev{B}} - {\ev{B}}^T)\bo)^T (\sum_{i} \alpha_i  B_i)\\&\cdot (\bo - ({\ev{B}} + \ev{B}^T)^{-1} (\ev{B}- {\ev{B}}^T)\bo) \\
+    &= \frac{(a-c)^2)}{8} (\bo + ({\ev{B}} + {\ev{B}}^T)^{-1} ({\ev{B}} - {\ev{B}}^T)\bo)^T {\ev{B}} \\&\cdot (\bo - ({\ev{B}} + {\ev{B}}^T)^{-1} ({\ev{B}}- {\ev{B}}^T)\bo) 
+\end{align*} 
+
+\end{proof} 
+
+
+\section{Proofs for Section \ref{sec:sbm}}
+
+\subsection{Proof of Proposition \ref{prop:group_pricing}}
+\begin{proof} 
+    
+    Suppose that we want to from prices to accommodate pricing for m groups. 
+    In this case we can treat the price as sum of orthogonal vectors where each of these sub-vector represents just the price charged to a particular community. That is we may write $\bp = \sum_{k=1}^m \bp_k $ where $$(p_k)_i = \begin{cases} q_k  & i\in \text{Block k} \\ 0 & Else \end{cases}$$ where $q_k$ is the price we are charged the kth block. 
+
+
+    The optimization problem can now be written via a direct subsistion as:
+    \begin{equation}
+        max_{q_1, q_2, \cdots, q_m}  \frac{1}{2}  ( [\sum_{k = 1}^{m}   p_k ] - c \bo )^T (I - 2\frac{2\rho}{\|G + G^T\|}G )^{-1} ( a\bo - \sum_{k = 1}^{m} p_k )
+    \end{equation}
+
+     Let $B = \frac{1}{2} (I - 2\rhof G)^{-1} $, $\mathcal{R} \in [0,1]^{m \times nm}$ $\mathbf{q} = \begin{bmatrix}  q_1  \\  q_2  \\ \vdots \\ q_m \end{bmatrix}$
+
+     From this expansion one may rewrite the problem as: 
+     $$ \max_\mathbf{q}  ( \mathcal{R}^T \mathbf{q} - c \bo )^T B (a\bo - \mathcal{R}^T \mathbf{q} ) $$
+
+    Taking the gradient with respect to $\mathbf{q}$ and equating to 0 we find that the stationary point of the objective must satisfy
+    \begin{align*}
+        a  \mathcal{R} B \bo + c \mathcal{R} B \bo &= \mathcal{R} (B+B^T) \mathcal{R}^T \mathbf{q} \\ 
+        \mathbf{q} &= \left( \mathcal{R} (B+B^T) \mathcal{R}^T \right)^{-1} \left( a \mathcal{R} B + c\mathcal{R} B^T \right) \bo 
+    \end{align*}
+
+     In addition, the Hessian is $-\left( \mathcal{R} (B+B^T) \mathcal{R}^T \right)$. B is a positive definite matrix and so the hessian is negative definite and therefore finding the stationary point of this function is sufficient to find the maximum of this objective function.
+\end{proof}
+\subsection{Proof of Theorem \ref{thm:sbm_opt}}
+\begin{proof}
+    The idea of this proof is to expand the price and profit into their series expansion. The series to expand is $(I - A)^{-1} = \sum_{k=0}^\infty A^k$. 
+
+    The optimal price is $\bp = \frac{a+c}{2} \bo + \rho (a-c) \frac{G-G^T}{\|G+G^T\|} (I - \rho(G+G^T))^{-1} \bo $. We will denote $\mathbf{u} := \rho \frac{G-G^T}{\|G+G^T\|} (I - \rhof(G+G^T))^{-1} \bo$.
+
+    The profit is $\frac{1}{2} (\bp - c1)^T (I - 2\rho G)^{-1} (a\bo - \bp)$. An expansion gives:
+    \begin{align*}
+        (\bp - c\bo)^T (I - 2\rhof G)^{-1} (a\bo - \bp) &= \frac{1}{2} \frac{(a-c)^2}{4} (\bo + \mathbf{u})^T (I - 2\rho G)^{-1} (\bo - \mathbf{u}) \\ 
+        &= \frac{(a-c)^2}{4}\biggl( \bo^T  (I - 2\rhof G)^{-1} \bo \\
+        &- \bo^T (I - 2\rhof G)^{-1} \mathbf{u}\\
+        &+ \bo^T (I - 2\rhof G^T)^{-1} \mathbf{u}\\
+        &- \mathbf{u}^T (I -2 \rhof G)^{-1} \mathbf{u} \biggr) \\ 
+    \end{align*}
+
+    We don't expand the first term, $\bo^T (I - 2\rhof G)^{-1} \bo $ because it is exactly the uniform profit which we are trying to compare to but we will expand the other terms in this expansion and keep only the parts that are second order or below. 
+
+    From here we expand terms starting with the 2nd and 3rd term. 
+    \begin{align*}
+        &\bo^T  ((I - 2\rhof G^T)^{-1} - (I - 2\rhof G)^{-1}) \mathbf{u}  \\
+        &\approx \bo^T \biggl( I + 2\rhof^2 G^T + 4\rhof^2 (G^T)^2 \\
+        &- (I + 2\rhof G + 4\rhof^2 G^2) \biggr) u \\
+        &= \bo^T (2\rhof (G^T - G) + 4\rhof^2 ((G^T)^2 - G^2) ) \mathbf{u} \\
+        &= 2\rhof \bo^T ( (G^T-G) + 2\rhof((G^T)^2 - G^2) ) \\
+        &\cdot \rhof (G -G^T) (I + \rhof (G+G^T) + \rhof^2 (G+G^T)^2 ) \bo \\
+        &= 2 \rhof^2 \bo^T (G^T-G) (G-G^T) \bo + o(\rhof^3)
+    \end{align*}
+
+    The 4th term is:
+    \begin{align*}
+        \mathbf{u}^T (I - 2\rhof G)^{-1} \mathbf{u} &= \left( \rho \frac{G-G^T}{\|G+G^T\|} (I - \rho(G+G^T))^{-1} \bo\right) ^T\\
+        &\cdot \left(\sum_{k} (2\rho G)^k \right) \left( \rho \frac{G-G^T}{\|G+G^T\|} (I - \rhof(G+G^T))^{-1} \bo \right) \\
+        &=   (\rhof)^2 \bo^T (G-G^T) ( G-G^T) \bo + o(\rhof^3) 
+    \end{align*}
+
+    Taking the sum of second, third, and fourth terms we have that they sum to together as 
+    \begin{equation}
+        (\rhof)^2 \bo^T (G^T-G)(G-G^T) \bo + o(\rhof^3) 
+    \end{equation}
+    
+
+\end{proof} 
+\subsection{Proof of Theorem \ref{thm:sbm_block}}
+\begin{proof}
+    Let $\mathbf{u} := \rho (M-M^T) (I - \rho (M+M^T))^{-1} \bo$. We will expand inverse terms by their series expansion, i.e., $(I-2\rho G)^{-1} = \sum_{k=0}^\infty (2\rho G)^k$. 
+\begin{align*}
+    \text{Profit} &= (p_{block} - c\bo)^T (I - 2\rhof G)^{-1} (a\bo - p_{block}) \\ 
+    &= (\frac{a-c}{2})^2 \bo^T (I+\mathbf{u})^T R^T (I - 2\rhof G)^{-1} R(I-\mathbf{u}) \bo \\ 
+    &= (\frac{a-c}{2})^2 \biggl( \bo^T R^T (I - 2\rhof G)^{-1} R \bo \\
+    &+ \bo^T \mathbf{u}^T R^T ((I - 2\rhof G)^{-1}-(I - 2\rhof G^T)^{-1}) \bo - \bo^T \mathbf{u}^T  R^T (I - 2\rhof G)^{-1} R \mathbf{u} \bo \biggr) \\ 
+    &= (\frac{a-c}{2})^2 ( \bo^T (I - 2\rhof G)^{-1} \bo \\
+    &+ \frac{\rho}{\|M+M^T\|} \bo^T (I + \frac{\rho}{\|M+M^T\|} )(M+M^T))(M^T-M)R^T (2\rhof (G-G^T)) \bo \\
+    &- (\frac{\rho}{\|M+M^T\|})^2 \bo^T (I+ \frac{\rho}{\|M+M^T\|} (M+M^T))\\
+    &\cdot (M^T - M) R^T (I + \rhof G) R (M-M^T) (I+\frac{\rho}{\|M+M^T\|} (M+M^T))\bo 
+\end{align*}
+
+Next, we simplify and keep only the terms that are lower order between the second term. 
+\begin{align*}
+   &E[\frac{\rho}{\|M+M^T\|} \bo^T (I + \frac{\rho}{\|M+M^T\|} (M+M^T))(M^T-M)R^T (2\rhof (G-G^T)) \bo\\
+   &= 2\frac{\rho}{\|M+M^T\|} \rhof  \bo^T (M^T-M) R^T (G-G^T) \bo] \\
+   &= \ex[2\rhof \frac{\rho}{\|M+M^T\|} \bo^T (M^T-M) (I_m \otimes \bo_n)^T  (G-G^T) (\bo_m \otimes \bo_n)] \\
+   &= 2\rhof \frac{\rho}{\|M+M^T\|} \bo^T (M^T-M) \ex[(I_m \otimes \bo_n)^T  (G-G^T) (\bo_m \otimes \bo_n] \\
+   &= 2\rhof \frac{\rho}{\|M+M^T\|} \bo^T (M^T-M) (I_m \otimes \bo_n)^T  (M-M^T)\otimes 1_{n,n}) (\bo_m \otimes \bo_n] \\
+   &= 2 n^2 \rhof \frac{\rho}{\|M+M^T\|} \bo^T (M^T - M) (M-M^T) \bo \\
+\end{align*}
+
+We also expand the fourth term as:
+
+\begin{align*}
+    & (\frac{\rho}{\|M+M^T\|})^2 \bo^T (I+ \frac{\rho}{\|M+M^T\|} (M+M^T))\\
+    &\cdot (M^T - M) R^T (I + \rhof G) R (M-M^T) (I+\frac{\rho}{\|M+M^T\|} (M+M^T))\bo \\
+    &= (\frac{\rho}{\|M+M^T\|})^2 \bo^T (M^T- M) R^T R (M - M^T) \bo  \\ 
+    &= n (\frac{\rho}{\|M+M^T\|})^2 \bo^T (M^T- M) (M - M^T) \bo 
+\end{align*}
+
+But now using our lemma we have that $E[\rhof] = \frac{\rho}{\| (M+M^T) \otimes 1_{n,n} \|} = \frac{r}{\|M+M^T\| n} = \frac{1}{n}\sigma  $
+
+In this case, the expected optimal block profit can be expressed as: 
+\begin{align*}
+    (\frac{a-c}{2})^2 (\bo^T (I - 2\rhof G \bo + n (\frac{\rho}{\|M+M^T\|})^2 \bo^T (M^T -M )(M-M^T) \bo) + o(\|M+M^T\|^{-3})
+\end{align*}
+\end{proof}
+\subsection{Proof of Theorem \ref{prop:var_expression}}
+\begin{proof}
+    We prove this by taking the difference between \ref{thm:sbm_opt} and \ref{thm:sbm_block}. This difference is 
+    \begin{equation}
+        (\rhof)^2 \left(\bo^T \ev{ (G^T -G)(G-G^T)} \bo - \bo^T ( \ev{G^T} - \ev{G})(\ev{G}-\ev{G^T}) \right)  \bo 
+    \end{equation}
+
+    For each term, we have:
+    \begin{align*}
+        \bo^T (\ev{ (G^T -G)(G-G^T)} )\bo  &= \bo^T (\ev{G^T G} - \ev{G^T G^T} - \ev{G^2} + \ev{G G^T}) \bo  
+    \end{align*}
+    So the difference of terms is:
+    \begin{align*}
+        \bo^T ( (\ev{G^T G} - \ev{G^T}\ev{G}) - (\ev{G^T G^T}-\ev{G^T}^2) - (\ev{G^2}-\ev{G}^2) + (\ev{G G^T} - \ev{G}\ev{G^T}) \bo \\
+    \end{align*}
+    But $G \bo$ is a vector representing the out-degree of each node, and $G^T \bo$ is the in-degree. Making these substitutions, we have: 
+    \begin{align*}
+        \bo^T  G^T G \bo &= \sum_{i=0}^{nm} out_i out_i \\ 
+        \bo^T G^T G^T \bo &= \sum_{i=0}^{nm} out_i in_i \\
+        \bo^T G^2 \bo &= \sum_{i=0}^{nm} in_i out_i \\
+        \bo^T G G^T \bo &= \sum_{i=0}^{nm} in_i in_i \\
+    \end{align*}
+
+    Using linearity of expectations, we have:
+    \begin{align*}
+         &\bo^T  (\ev{G^T G} - \ev{G^T}\ev{G}) - (\ev{G^T G^T}-\ev{G^T}^2) - (\ev{G^2}-\ev{G}^2) + (\ev{G G^T} - \ev{G}\ev{G^T}) \bo \\
+         &=\bo^T (\sum_{i=0}^{nm} \ev{out_i^2 } + \ev{in_i^2} - \ev{out_i}^2 - \ev{in_i}^2 ) \bo\\ 
+          &=\bo^T (\sum_{i=0}^{nm} Var(out_i) + Var(in_i ) \bo \\ 
+          &= n \bo^T (\sum_{j=0}^m  Var(out_j) + Var(in_j) \bo
+    \end{align*}
+    Where the last step comes from is noting that two nodes in the same community have the same distribution of in and out degree. 
+\end{proof} 
+
+\subsection{Proof of Lemma Norm concentration}
+\begin{proof}\label{lem:norm_eq}
+    Let $\mathbf{u}$ be the largest eigenvector of $G+G^T$. Then the norm is equal to:
+    \begin{align*}
+        \| G +G^T \| &= \mathbf{u}^T (G+G^T) \mathbf{u} \\
+        &= \sum_{i,j} \mathbf{u}_i \mathbf{u}_j (G+G^T)_{ij}
+    \end{align*}
+
+  Next, we note that
+  \begin{align*}
+      \mathbf{u}^T (\ev{G} + \ev{G^T}) \mathbf{u} &= \sum_{ij}\mathbf{u}_i \mathbf{u}_j \ev{(G+G^T)_{ij}  } 
+  \end{align*}
+
+ Nodes in the same community will have a concentrated leading factor of $\mathbf{u}_i \mathbf{u}_j$ because the edges of each community are concentrated. We also have that $\ev{G} = p(n) M \otimes 1_{n,n}$, where $\otimes$ is the knoecker product.  Combining these facts, we have that  $\|\ev{G}  + \ev{G^T}\| = (1 + o(1)) \| G+G^T \| $ we also have that $\|\ev{G}  + \ev{G^T}\| = \| p(n) (M+M^T) \otimes 1_{n,n} \| = n p(n) \| M+M^T \| $. 
+\end{proof}
+
+% \noindent\textbf{Proof of Lemma \ref{core-norm}}
+% \begin{proof}
+%     It is known that for a network $d_{ave} (G) \leq \lambda_1 (G) \leq d_{max} (G)$ where $d_{ave} (G)$ is the average degree, $\lambda_1 (G)$ is the largest eigenvalue and $d_{max} (G)$ is the largest degree. In the core periphery structure, all nodes have a self-loop connection probability of $p_1$. In addition, root and internal nodes have a $b p_2$ outgoing connections. Internal  and leaf nodes have $p_2$ incoming edges. Therefore, the max degree is bounded by the internal nodes with $(b+1) p_2 + 2 p_1$ edges. Therefore, the norm is bounded by a constant times the branching factor as both the average and maximum degrees of this network are. 
+% \end{proof}
+
+\subsection{Proof of Theorem \ref{thm:core_regret}}\label{proof:core_regret}
+\begin{proof}
+Let $G(b,h, n, p(n))$ be a tree-SBM with a branching factor of b, height h, n nodes per community, and a density of $p(n)$.  The variance of the in and out degrees grow at a rate of $b n p(n)$. From Lemma \ref{lem:norm_eq} we know that $\| G(b,h,n,p(n)) + G(b,h,n,p(n))^T\| = (1+o(1)) n b p(n) $ noting the largest eigvenvalue of a tree with branching factor $b$ is bounded by $b+1$. 
+
+With $m$ communities, Theorem \ref{prop:var_expression} says that the leading term of the regret will take the form of:
+\begin{align*}
+     \frac{ n \rho^2}{ (n p(n) \|M+M^T\|)^2 } \sum_{i =1 }^{m} Var( in_i ) + Var(out_i) &\leq   \frac{ n \rho^2}{ (n b p(n) )^2 } \left(2 b  n p(n) m \right) \\
+     &= \frac{2 b m n^2 \rho^2  p(n)}{n^2 b^2 p(n)^2} \\
+     &= \frac{2 m \rho^2  }{b p(n)}\\
+     &= \frac{2 \rho^2 (b^{h+1} -1)}{ b p(n) (b-1)}\\
+     &\leq \frac{2 \rho^2 b^{h+1}}{ b p(n)}\\
+     &= \frac{2 \rho^2 b^{h}}{ p(n)}\\
+\end{align*}
+\end{proof}
+
+% \subsection{Proof of Theorem \ref{thm:core_regret}}\label{proof:core_regret2}
+% \begin{proof}
+% Let $G(b,h, n, p(n))$ be a tree-SBM with a branching factor of b, height h, n nodes per community, and a density of $p(n)$.  The variance of the in and out degrees grows at a rate of $b n p(n)$. From Lemma \ref{lem:norm_eq}, we know that $\| G(b,h,n,p(n)) + G(b,h,n,p(n))^T\| = (1+o(1)) n b p(n) $ noting the largest eigvenvalue of a tree with branching factor $b$ is bounded by $b+1$. 
+
+% With $m$ communities, Theorem \ref{prop:var_expression} says that the leading term of the regret will take the form of:
+% \begin{align*}
+%      \frac{ n \rho^2}{ (n p(n) \|M+M^T\|)^2 } \sum_{i =1 }^{m} Var( in_i ) + Var(out_i) &\leq   \frac{ n \rho^2}{ (n b p(n) )^2 } \left(2 b  n p(n) m \right) \\
+%      &= \frac{2 b m n^2 \rho^2  p(n)}{n^2 b^2 p(n)^2} \\
+%      &= \frac{2 m \rho^2  }{b p(n)}\\
+%      &= \frac{2 \rho^2 (b^{h+1} -1)}{ b p(n) (b-1)}\\
+%      &\leq \frac{2 \rho^2 b^{h+1}}{ b p(n)}\\
+%      &= \frac{2 \rho^2 b^{h}}{ p(n)}\\
+% \end{align*}
+% \end{proof}
+
+\subsection{Proof of Theorem \ref{thm:core_regret_uni}}\label{proof:core_regret_uni}
+\begin{proof} 
+Let $G(b,h, n, p(n))$ be a tree-SBM with a branching factor of b, height h, n nodes per community, and a density of $p(n)$. The uncentered second moment is bounded by $n m \rho^2 + nm \rho^2 = n \frac{b^{h+1} -1}{b-1} + n \rho^2 \frac{b^{h+1} -1}{b-1}$ 
+of the in and out degrees grow at a rate of $b n p(n)$. From Lemma \ref{lem:norm_eq}, we know that $\| G(b,h,n,p(n)) + G(b,h,n,p(n))^T\| = (1+o(1)) n b p(n) $, noting the largest eigvenvalue of a tree with branching factor $b$ is bounded by $b+1$. 
+
+With $m$ communities, Theorem \ref{prop:var_expression} says that the leading term of the regret will take the form of:
+\begin{align*}
+     \frac{ n \rho^2}{ (n p(n) \|M+M^T\|)^2 } \sum_{i =1 }^{m} Var( in_i ) + Var(out_i) &\leq   \frac{ n \rho^2}{ (n b p(n) )^2 } \left(2 b  n p(n) m \right) \\
+     &= \frac{2 \rho^2 n^3 m b^2 p(n)^2}{n^2 p(n)^2 b^2} \\
+     &= 2 \rho^2 n m\\
+     &= \frac{b^{h+1} -1 }{b-1} n \rho^2
+\end{align*}
+\end{proof}
+
+
+ \noindent\textbf{Proof of Theorem \ref{thm:noise}} \label{proof:noise} 
+\begin{proof}
+    Let G be a  Tree-SBM model with branching factor $b$, height $h$, and $n$ nodes per community with K extra added random edges. 
+
+    We know from \ref{cor:uni_sbm_reg} that the regret will be of the form  $\left(\frac{\rho}{\|G+G^T\|} \right)^2 \ev{\left[ \bo^T (G^T-G)(G-G^T) \bo \right]}$
+    
+    First, we think about the expected norm of $\|G+G^T\|$. We can bound the eigenvalues by looking at G,G which has two subgraphs, the core-periphery  P model and the Erd\"{o}s Renyi noisy part(the K random edges). We note that $d_{ave}(G+G^T) \leq  \|G+G\| \leq \|E+E^T\| + \|P+P^T\|$.
+    
+    By the theorem of \cite{krivelevich2003largest} we know that the norm of the $\|E+E^T\|= (1+o(1)) K$. By  our Lemma \ref{lem:norm_eq} we know that $\|P+P^T\| = (1+o(1)) p(n) n \| M +M^T\|$. The largest eigenvalue is controlled by whichever of these is growing faster. In particular, if P has a density of $\frac{\log n}{n}$ the average degree in the P subgraph is proportional to $\log (n)$. If K is growing faster than $\log(n)$ then the norm is dominated by the E subgraph. 
+
+    As for the "additive" part of the regret we directly calculate $\ex{\bo^T (G^T - G)(G-G^T) \bo} $.
+    
+    \begin{align*}
+        \ex{ \bo^T (G^T - G)(G-G^T) \bo } &= \sum_{i } (out_i - in_i)^2 \\ 
+        &= \sum_{i : root } (out_i - in_i)^2 \\
+        &+ \sum_{i : internal} (out_i - in_i)^2 \\
+        &+ \sum_{i : leaf}(out_i - in_i)^2  \\
+        &= \sum_{i : root } (x_{1,i} + b y_{1,i} + \ell_{1,i} - (x_{2,i} + \ell_{2,i} )^2 \\
+        &+ \sum_{i : internal} (x_{1,i} + b y_{1,i} + \ell_{1,i} - (x_{2,i} + y_{2, i} + \ell_{2,i} )^2  \\
+        &+ \sum_{i : leaf} (x_{1,i}  + \ell_{1,i} - (x_{2,i} + y_{2, i} + \ell_{2,i} )^2  \\ 
+        &=  \sum_{i : root } (x_{1,i} + b y_{1,i} + \ell_{1,i} - (x_{2,i} + \ell_{2,i} )^2 \\
+        &+ \sum_{i : internal} (x_{1,i} + b y_{1,i} + \ell_{1,i} - (x_{2,i} + y_{2, i} + \ell_{2,i} )^2  \\
+        &+ \sum_{i : leaf} (x_{1,i}  + \ell_{1,i} - (x_{2,i} + y_{2, i} + \ell_{2,i} )^2  \\ 
+        &= \sum_{i : root} 2 Var(x) + b^2 \ex{^2} + 2Var(\ell) \\ 
+        &+ \sum_{i : internal} 2 Var(x) + 2 Var(\ell) + (1+b^2) \ex{y^2} - 2b \ex{y}^2 \\
+        &+ \sum_{i :leaf } 2 Var(x) + 2 Var(\ell) + \ex{y^2} \\
+        &\leq  \sum_{root} 2 n p_1 + b^2 (n p_2 + n^2 p_2^2 ) + 2 \frac{K}{nm} \\
+        &+ \sum_{internal} 2 n p_1 + 2 \frac{K}{nm} + (1+b^2)(n p_2) - (b^2 -1) n^2 p_2^2 \\ 
+        &+\sum_{i : leaf} np_1 + 2\frac{K}{nm} + np_2 + n^2 p_2^2\\ 
+        &= \Theta ( \frac{K}{m} + n^2 p_1 + n^3 p_2^2  ) \\
+        &= \Theta( \frac{K}{m} + n \log(n) + n \log(n)^2 )
+    \end{align*}
+
+    Suppose then that $K = O(nm \log n)$. Then the norm of G will be on the order of $O(\log n)$. 
+    In this case we have that 
+    \begin{align*}
+        (\frac{\rho^2}{\|G+G^T\|} )^2 \ex{ 1^T (G^T-G)(G-G^T) } \bo &= \Theta \left( \frac{1}{\log(n)^2 } \left( \frac{K}{m} + n \log(n) + n \log(n)^2 ) \right) \right)\\
+        &= \Theta \left( \frac{K}{m \log(n)^2} + \frac{n}{\log(n)} + n  ) \right) \\
+        &= O(n)
+    \end{align*}
+    This is sufficient to establish that a constant fraction of profits are lost. 
+
+    Now suppose that instead $K = \Omega ( mn \log n) $. Now, the order of $\|G+G^T\| = (1 + o(1)) \frac{K}{nm}$. This leads to a regret of: 
+    \begin{align*}
+        (\frac{\rho^2}{\|G+G^T\|} )^2 \ex{ \bo^T (G^T-G)(G-G^T) } \bo &= \Theta \left( \frac{n^2 m^2}{K^2 } \left( \frac{K}{m} + n \log(n) + n \log(n)^2 ) \right) \right)\\
+        &= o(n) + o(n) + \frac{n^2 m}{K} \\
+        &< o(n) + \frac{n^2 m}{nm \log n} \\
+        &= \frac{n}{\log n}
+    \end{align*}
+\end{proof}
+
+\section{Proofs for Section \ref{sec:klevel}}
+
+\subsection{Alternate proof of optimal partitioned price}
+\begin{proof} \label{proof:optPrice}
+       Suppose that we want to form prices to accommodate pricing for m groups. 
+    In this case, we can treat the price as the sum of orthogonal vectors, where each of these sub-vectors represents just the price charged to a particular community. That is, we may write $\bp = \sum_{k=1}^m \bp_k $ where $$(p_k)_i = \begin{cases} q_k  & i\in \text{Block k} \\ 0 & Else \end{cases}$$ where $q_k$ is the price we are charged for the kth block. 
+
+
+    The optimization problem can now be written via a direct substitution as:
+    \begin{equation}
+        max_{q_1, q_2, \cdots, q_m}  \frac{1}{2}  ( [\sum_{k = 1}^{m}   p_k ] - c \bo )^T (I - 2\frac{2\rho}{\|G + G^T\|}G )^{-1} ( a\bo - \sum_{k = 1}^{m} p_k )
+    \end{equation}
+
+     Let $B = \frac{1}{2} (I - 2\rhof G)^{-1} $, $\mathcal{R} \in [0,1]^{m \times nm}$ $\mathbf{q} = \begin{bmatrix}  q_1  \\  q_2  \\ \vdots \\ q_m \end{bmatrix}$
+
+     From this expansion, one may rewrite the problem as: 
+     $$ \max_\mathbf{q}  ( \mathcal{R}^T \mathbf{q} - c \bo )^T B (a\bo - \mathcal{R}^T \mathbf{q} ) $$
+
+    Taking the gradient with respect to $\mathbf{q}$ and equating to 0, we find that the stationary point of the objective must satisfy
+    \begin{align*}
+        a  \mathcal{R} B \bo + c \mathcal{R} B \bo &= \mathcal{R} (B+B^T) \mathcal{R}^T \mathbf{q} \\ 
+        \mathbf{q} &= \left( \mathcal{R} (B+B^T) \mathcal{R}^T \right)^{-1} \left( a \mathcal{R} B + c\mathcal{R} B^T \right) \bo 
+    \end{align*}
+
+     In addition, the Hessian is $-\left( \mathcal{R} (B+B^T) \mathcal{R}^T \right)$. B is a positive definite matrix, and so the Hessian is negative definite, and therefore finding the stationary point of this function is sufficient to find the maximum of this objective function.
+\end{proof}
+
+
+\subsection{Lemma for k-level profit}
+% \begin{proof}\label{proof:kprofit}
+%      $ $\newline
+%     Throughout this section use $B = B(\G, 0)$ as shorthand and suppose we are given a partition $ R \in \mathbb{R}^{k \times n}$. Then we consider the  matrix $D \defeq  R B R^T$ and the problem of pricing 
+%     \begin{align*}
+%         \max_{q \in \mathbb{R}^k} \frac{1}{2} (q - c1)^T D (a1 - q)
+%     \end{align*}
+
+%     Solving this k-dimensional problem is exactly solving our problem because we can interpret $q^T R^T \in \mathbb{R}^{k}$ to $p^T \in \mathbb{R}^{n}$ and $1_k^T R^T $ to $1_n^T $. 
+
+%     Let $\ell \defeq  (q-c1)$, then the optimal $\ell$ to charge is: 
+%     \begin{align*}
+%          \frac{d}{d\ell} \left( \frac{1}{2} (q - c1)^T D (a1 - q)\right) &= 0 \\
+%         &=  \frac{d}{d\ell} \left( -\ell^T D \ell + (a-c) \ell^T D \one \right)\\
+%         0 &= (D+D^T) \ell + (a-c) D\one \\
+%         \ell &= (a-c) (D+D^T)^{-1} D \one
+%     \end{align*}
+%     Applying this to the profit, we get that the profit is:
+%     \begin{align*}
+%         2 \Pi(R) &= -\ell^T D \ell + (a-c)\ell^T D \one  \\ 
+%         &= (a-c)^2  \left( -\one^T D^T (D+D)^{-1} D (D+D^T)^{-1} D \one  + \one^T D^T (D+D^T)^{-1} D \one \right) \\ 
+%         &= (a-c)^2 \left( -\one^T D^T (D+D)^{-1} (\frac{D+D^T}{2}) (D+D^T)^{-1} D \one  + \one^T D^T (D+D^T)^{-1} D \one \right) \\
+%         &= (a-c)^2 \left( -\frac{\one^T D^T (D+D^T)^{-1} D \one}{2}  + \one^T D^T (D+D^T)^{-1} D \one \right)  \\ 
+%         &= \frac{(a-c)^2}{2} \one^T D^T (D+D^T)^{-1} D \one\\
+%         \Pi &= \frac{(a-c)^2}{2} \one^T B R^T (R \frac{(B+B^T)}{2} R^T)^{-1} R B \one
+%     \end{align*}
+%    Where in the last step we used $ R^T 1_k =  1_n$. As each column of $R$ sums to 1.  
+
+%     Let $S := \left( \frac{(D+D^T)}{2}\right)^{-\frac{1}{2}}$ S exists as $(D+D^T) \succ 0$. To complete the proof, we observe that if $P$ is defined as $P \defeq H^{-1} R^T (R \frac{(B+B^T)}{2} R^T)^{-1} R H^{-1}$ then the last line simplifies to $\frac{1 }{2} u^T P u =  \frac{1}{2} u^T P P u = \frac{1}{2} \| Pu\|$ since P is a projector. 
+% \end{proof}
+
+% \subsection{Lemma for Theorem \ref{thm:noisy-regret}}
+% \begin{proof}
+%     Suppose that we use $\tb{p}$ and the expected B matrix at $\alpha$ is given by $B(G,\alpha)$.  Let $S = \frac{(B+B^T)}{2}, \tb{u} \defeq (a-c) S^{\frac{-1}{2}} B \one$. 
+%     Let $\tb{q} \defeq \tb{p} -c\one$ and $\tb{z} = S^{\frac{1}{2}} \tb{q}$. Then the profit is 
+%     \begin{align*}
+%         2 \Pi(\tb{p}) &= \tb{q}^T \overline{B} (a\one - \tb{p}) \\
+%         &= - \tb{q}^T \overline{B} \tb{q} + (a-c) \tb{q}^T \overline{B} \one \\ 
+%         &= -\frac{\tb{q}^T (\overline{B}+\overline{B}^T) \tb{q} }{2} + (a-c) \tb{q}^T \overline{B} \one\\
+%         &= - \overline{z}^T \overline{z} + \overline{z}^T {u} \\ 
+%         &= \overline{u}^T \overline{u}- \overline{u}^T \overline{u}   - \overline{z}^T \overline{z} + \overline{z}^T {u} \\
+%         &= \frac{ \| \overline{u} \|^2 - \| u - 2z\|^2}{4}
+%     \end{align*}
+% \end{proof}
+
+% \subsection{Proof of Theorem \ref{thm:noisy-regret}}
+% \begin{proof}\label{proof:noisy-regret}
+%     Suppose that we use $\tb{p}$ and the expected B matrix at $\alpha$ is given by $B(G,\alpha)$.  Let $S = \frac{(B+B^T)}{2}, \tb{u} \defeq (a-c) S^{\frac{-1}{2}} B \one$. 
+%     Let $\tb{q} \defeq \tb{p} -c\one$ and $\tb{z} = S^{\frac{1}{2}} \tb{q}$. Then the profit is 
+%     \begin{align*}
+%         2 \Pi(\tb{p}) &= \tb{q}^T \overline{B} (a\one - \tb{p}) \\
+%         &= - \tb{q}^T \overline{B} \tb{q} + (a-c) \tb{q}^T \overline{B} \one \\ 
+%         &= -\frac{\tb{q}^T (\overline{B}+\overline{B}^T) \tb{q} }{2} + (a-c) \tb{q}^T \overline{B} \one\\
+%         &= - \overline{z}^T \overline{z} + \overline{z}^T {u} \\ 
+%         &= \overline{u}^T \overline{u}- \overline{u}^T \overline{u}   - \overline{z}^T \overline{z} + \overline{z}^T {u} \\
+%         &= \frac{ \| \overline{u} \|^2 - \| u - 2z\|^2}{4}
+%     \end{align*}
+% \end{proof}
+\subsection{Proof of Theorem \ref{thm:noisy-regret}}
+\begin{proof}
+
+    This proof combines two lemmas. The first is the profit when there is no noise and the second characterizes the change due to uncertainty. 
+    \begin{lemma} 
+        The expected profit with no noise is
+
+        $\Pi(0, \pricezero) = \frac{(a-c)^2}{4} \one^T B(0)^T R \left( R (B(0) + B(0)^T ) R^T\right)^{-1} R B(0) \one $
+    \end{lemma}
+    \begin{proof}
+             $ $\newline
+            Throughout this section use $B = B(0)$ as shorthand and suppose we are given a partition $ R \in \mathbb{R}^{k \times n}$. Then we consider the  matrix $D \defeq  R B R^T$ and the problem of pricing 
+            \begin{align*}
+                \max_{q \in \mathbb{R}^k} \frac{1}{2} (q - c1)^T D (a1 - q)
+            \end{align*}
+        
+            Solving this k-dimensional problem is exactly solving our problem because we can interpret $q^T R^T \in \mathbb{R}^{k}$ to $p^T \in \mathbb{R}^{n}$ and $1_k^T R^T $ to $1_n^T $. 
+        
+            Let $\ell \defeq  (q-c1)$, then the optimal $\ell$ to charge is: 
+            \begin{align*}
+                 \frac{d}{d\ell} \left( \frac{1}{2} (q - c1)^T D (a1 - q)\right) &= 0 \\
+                &=  \frac{d}{d\ell} \left( -\ell^T D \ell + (a-c) \ell^T D \one \right)\\
+                0 &= (D+D^T) \ell + (a-c) D\one \\
+                \ell &= (a-c) (D+D^T)^{-1} D \one
+            \end{align*}
+            Applying this to the profit, we get that the profit is:
+            \begin{align*}
+                2 \Pi(R) &= -\ell^T D \ell + (a-c)\ell^T D \one  \\ 
+                &= (a-c)^2  \left( -\one^T D^T (D+D)^{-1} D (D+D^T)^{-1} D \one  + \one^T D^T (D+D^T)^{-1} D \one \right) \\ 
+                &= (a-c)^2 \left( -\one^T D^T (D+D)^{-1} (\frac{D+D^T}{2}) (D+D^T)^{-1} D \one  + \one^T D^T (D+D^T)^{-1} D \one \right) \\
+                &= (a-c)^2 \left( -\frac{\one^T D^T (D+D^T)^{-1} D \one}{2}  + \one^T D^T (D+D^T)^{-1} D \one \right)  \\ 
+                &= \frac{(a-c)^2}{2} \one^T D^T (D+D^T)^{-1} D \one\\
+                \Pi &= \frac{(a-c)^2}{2} \one^T B R^T (R \frac{(B+B^T)}{2} R^T)^{-1} R B \one
+            \end{align*}
+           Where in the last step we used $ R^T 1_k =  1_n$. 
+    \end{proof}
+
+    \begin{lemma}
+        The gap expected gap in profit from noise is 
+        $$\ex{\Pi(\alpha,\pricealpha)  - \Pi(\alpha, \pricezero) } = \frac{(a-c)^2}{4} (\delta \tb{p}(\alpha,R))^T W(\alpha, R) (\delta \tb{p}(\alpha,R)) $$
+    \end{lemma}
+
+    \begin{proof}
+        Let $\tb{d} \defeq \pricealpha -\pricezero$ be the difference in prices. Also let $B(\alpha)$ be denoted by $B$
+        
+        \begin{align*}
+            \Pi(\alpha, \pricealpha) - \Pi(\alpha,  \pricezero)  &= \frac{1}{2} \biggl( (\pricealpha-\pricezero)^T B (a\one - \pricealpha) \\
+            &- (\pricealpha - c\one)^T B (\pricealpha-\pricezero) \\
+            &- (\pricealpha-\pricezero)^T B(\pricealpha-\pricezero)\biggr) \\
+            &= \frac{1}{2} (\pricealpha-\pricezero)^T B (\pricealpha-\pricezero) \\
+            &= \frac{1}{2} (\pricealpha-\pricezero)^T (B+B^T) (\pricealpha-\pricezero) \\
+            &= \frac{1}{4} (\delta \tb{p}(\alpha,R))^T (B+B^T) (\delta \tb{p}(\alpha, R))
+        \end{align*}
+    \end{proof}
+
+
+    Combining these two lemmas yields the proof of the main theorem. 
+    
+\end{proof}
+
+
+\section{Proof of Theorem \ref{thm:nphard}  }
+\begin{proof}\label{proof:nphard}
+
+    We will show that if the problem of finding the best k-level pricing was possible in polynomial time, then solving K-Means clustering is possible to do optimally in polynomial time. Suppose we are given a set of d-dimensional data points $(\tb{x}_1, \tb{x}_2, \cdots, \tb{x}_n)$. Let $\tb{v}$ be defined as the "stacked" vector of the x data points that is $\tb{v} \in \mathbb{R}^{nd}$ and $\tb{v} = \begin{bmatrix} \tb{x}_1 \\ \tb{x}_2 \\ \vdots \\ \tb{x}_n \end{bmatrix}$. 
+
+
+    We can construct $B$ be such that $\frac{B+B^T}{2} = I$ and  $\tb{v} = \left( \frac{B+B^T}{2} \right)^{-\frac{1}{2}} B 1$.  But in this case, the projector P is then $P = R^T (RR^T)^{-1}R$. This special form of P is an operator than converts $\tb{x} \rightarrow \tb{\mu}$  where $\tb{\mu_i}$ is the component-wise mean of the elements in the ith partition of x. The last detail is that instead of $R$ directly we should us $R' \defeq R \otimes I$ to ensure that each vector stays together. But under this notation we have that:
+    
+    % We can construct $B$ be such that $\frac{B+B^T}{2} = I$ and  $u = \left( \frac{B+B^T}{2} \right)^{-\frac{1}{2}} B 1$.  But in this case, the projector P is then $P = R^T (RR^T)^{-1}R$. This special form of P is an operator than converts $\tb{x} \rightarrow \tb{\mu}$  where $\tb{\mu_i}$ is the component-wise mean of the elements in the ith partition of x. The last detail is that instead of $R$ directly we should us $R' \defeq R \otimes I$ to ensure that each vector stays together. But under this notation we have that:
+    \begin{align*}
+        \min \| u - P u \|^2 &= \min \sum_{j=1}^{k} \sum_{i \in C_j} \| x_i - \mu_j\|^2
+    \end{align*}
+    Where $C_j$ is the set of vectors belonging to group j. This is exactly the k-means clustering problem so solving this problem is as hard as solving k-means clustering. 
+\end{proof}
+
+% \section{Proof of Lemma} \TODO \label{proof:klevel-regret}
+% \begin{proof}
+%     We take the series expansion of the quadratic term $\Pi(\tb{p})$ centered at $\tb{p}^*$. This gives us 
+%     \begin{align*}
+%         \Pi(\tb{p}) &= \Pi(\tb{p}^*) + \nabla \Pi(\tb{p}^*)^T ( \tb{p}^* - \tb{p}) + \frac{1}{2} ( \tb{p}^* - \tb{p})^T \left( \nabla^2 \Pi(\tb{p}^*) \right) ( \tb{p}^* - \tb{p}) \\ 
+%         &= \Pi(\tb{p}^*) + \frac{1}{2} ( \tb{p}^* - \tb{p})^T \left(- (B+B^T) ) \right) ( \tb{p}^* - \tb{p}) \\ 
+%         \Pi(\tb{p}^*) - \Pi(\tb{p}) &= \frac{1}{2} ( \tb{p}^* - \tb{p})^T \left( (B+B^T) ) \right) ( \tb{p}^* - \tb{p})
+%     \end{align*}
+% \end{proof}
+
+
+
+% \textbf{Proof of Fix Ref}
+% \begin{proof}
+% We know from TODO that the profit will take the form of $\frac{(a-c)^2}{4} \one^T B^T R^T(R(B+B^T)R^T)^{-1} R B\one $. Let $W_k = G^K + (G^T)^k$ and  $X =(RR^T)^{-1}$ and $\gamma = \frac{2\rho}{\|G+G^T\|}$.
+% Then we can write the profit under perfect information as(leaving of the $\frac{(a-c)^2}{4}$ term: 
+% \begin{align*}
+%     \one^T B^T R^T (R (B+B^T)R^T)^{-1} R B\one &= \one^T B^T R (R ( 2 I + \sum_{k=1} \gamma^k (G^k + (G^T)^k) ) R^T)^{-1}R B\one \\
+%     &= \one^T B^T R \left( (2RR^T)(I + \sum_{k=1} \gamma^k \frac{X}{2} R (G^k + (G^T)^k) ) R^T) \right)^{-1} R B \one \\
+%     &= \frac{1}{2} \one^T B^T R^T  \left( I - -\sum_{k=1} \gamma^k \frac{X}{2} R W_k R^T  \right)^{-1} X R B\one \\
+%     &= \frac{1}{2} \one^T B^T R^T \left( \sum_{j=0}^\infty \left(-\frac{1}{2}\right)^j \left(\sum_{k=1} \gamma^k X R W_k R^T \right)^j \right) X RB\one 
+% \end{align*}
+
+% We then expand $B=\sum_{i=0}^\infty \gamma G$. We can then collect the terms of this product each have $\gamma^0, \gamma^1$ or $\gamma^2$ in their expression. The identities $\one^T R^T X R= \one , R^T X R \one = \one $ are used frequently to simplify terms. 
+% \begin{align*}
+%    \one^T B^T R^T \left( \sum_{j=0}^\infty \left(-\frac{1}{2}\right)^j \left(\sum_{k=1} \gamma^k X R W_k R^T \right)^j \right) X RB\one  &=  \one^T R^T X R \one \\
+%   &+ \gamma^1 \one^T \left( G^T R^T X R \one + R^T X R G \one - \frac{R^T X R W_1 R^T X R }{2}\right) \\
+%    &+ \gamma^2 \one^T \Biggl( (G^T)^2 R^T X R + R^T X RG^2 + G^T R^T X R G \\
+%    &- \frac{1}{2} R^T X R W_2 R^T + \frac{1}{4} R^T X R W_1 R^T X R W_1 R^T \\
+%    &- \frac{G^T R^T X R W_1 R X R - R^T X R W_1 R^T X R G }{2} \Biggr) \\
+%    &= n + \gamma^1  \one^T G \one + \gamma^2 \one^T G^2 \one  \\
+%    &+ \gamma^2 \one^T \Biggl( G^T R^T X G G + \frac{1}{4} R^T X R W_1 R^T X R W_1 R^T\\
+%    &- \frac{G^T R^T X R W_1 R X R - R^T X R W_1 R^T X R G }{2} \Biggr) \one  \\
+%    &= n + \gamma \one^T G \one + \gamma^2 \one^T G^2 \one \\
+%    &+ \frac{\gamma^2}{4} \one^T (G-G^T)^T R^T X R(G-G^T) \one 
+% \end{align*}
+
+
+% \end{proof}
+
+
+% \textbf{Proof of corollary \ref{cor:random_2nd}}
+% \begin{proof}
+%     The expression $\tb{v} \defeq R(G-G^T)\one $ is by its construction 
+% \begin{align*}
+%     \tb{v}_g &=  \sum_{i\in g}\sum_{j=1}^n (G_{ij} - G_{ji})
+%     \sum_{i\in g}\sum_{j\not\in g} (G_{ij} - G_{ji}) \\ 
+% \end{align*}
+
+% Then we have that:
+% \begin{align*}
+%     \one^T (G-G^T)^T R X R^T (G-G^T) \one &= \tb{v}^T X \tb{v} \\
+%     &= \sum_{i=1}^k \sum_{j=1}^n X_{ij} \tb{v}_i \tb{v}_j \\
+%     &= \sum_{i=1}^k  X_{ii} \tb{v}_i^2 \\
+%     &= \sum_{i=1}^k \frac{\tb{v}_i^2}{|g_i|}
+% \end{align*}
+
+% The expectation of this expression is 
+% \begin{align*}
+%     \ex{\tb{v} X \tb{v}} &=  \sum_{i=1}^k \frac{\ex{\tb{v}_i^2}}{|g_i|} \\
+%     &= \sum_{i=1}^k \frac{ Var(\tb{v}_i + \ex{\tb{v_i}}^2 }{|g_i|} 
+% \end{align*}
+
+% But with the assumption that noisy in the edges is independent between each pair of nodes such that the variance of edge (i,j) is $\sigma^2_{ij}$ and the expected value of the edge is $\mu_{ij}$ then we can write this as:
+% \begin{align*}
+%     \sum_{i=1}^k \frac{ Var(\tb{v}_i) + \ex{\tb{v_i}}^2 }{|g_i|}  &= \sum_{i=1}^k \frac{ \left( \sum_{j\in g_i} \sum_{\ell \not\in g_i} \sigma^2_{\ell j} + \sigma^2_{j\ell} \right) + \left( \sum_{j\in g_i} \sum_{\ell \not\in g_i} \mu_{j\ell} + \mu_{\ell j} \right)^2 }{|g_i|}  
+% \end{align*}
+
+% Completes the proof. 
+% \end{proof}
+\newpage
+\begin{itemize}
+    \item $S(\alpha) = B(\alpha)^T + B(\alpha)$
+    \item $v(R) = \tb{p}(\alpha)^* - \tb{p}(\alpha, R) $
+    \item $\| x \|_S = x^T S x $
+    \item $\delta = \tb{p}(\alpha, R) - \tb{p}(\alpha, R')$
+    \item $T(R,R') \defeq \Pi(\alpha, \tb{p}(0,R)) -\Pi(\alpha, \tb{p}(0,R')) $
+\end{itemize}
+
+For any variable, $x$,  let $\dot{x} \defeq \frac{d}{d\alpha} x$. 
+
+The key results are: 
+
+\begin{align*}
+    T(R,R') &= \frac{1}{2} \delta^T S(\alpha) v(R) - \frac{1}{4} \delta^T S(\alpha) \delta \\
+    &= \frac{1}{2} \delta^T S(\alpha) \left(\tb{p}^*(\alpha) - \frac{1}{2}(\tb{p}(0,R) + \tb{p}(0,R')) \right)
+\end{align*}
+
+So there is an increasing differences property when 
+\begin{align*}
+    0 &\leq \dot{T(R,R')}\\
+     &=  \frac{1}{2} \delta^T \dot{S(\alpha)} \left(\tb{p}^*(\alpha) - \frac{1}{2}(\tb{p}(0,R) + \tb{p}(0,R')) \right) \\
+    &+  \frac{1}{2} \delta^T S(\alpha) \left(\dot{\tb{p}^*(\alpha)} - \frac{1}{2}(\tb{p}(0,R) + \tb{p}(0,R')) \right)
+\end{align*}
+
+
+In particular, at $\alpha=0$ this simplifies to the condition: 
+
+\begin{align*}
+    \delta^T \dot{S(\alpha)} \delta + \delta^T S(\alpha) \dot{\tb{p}^*} |_{\alpha=0} &\geq 0
+\end{align*}
+
+
+We can write 
+\begin{align*}
+    \dot{S(0)} &= \gamma B(0)^T H(0) B(0)\\
+    \dot{\tb{p}(0)^*} &= WIP 
+\end{align*}

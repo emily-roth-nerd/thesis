@@ -4,35 +4,32 @@
 
 \subsection{Partitions}
 
-Here we develop notation to talk about partitions.  In this context, we seperate the nodes, $[n]$, into $k$ blocks. These blocks are labeled in some order, $G_1, \cdot, G_k$ so that we can refer to particular blocks. For each partition and for each node, we define the function $\commidx{P}{i}$ to return which block i is a member of in the partition P. This is well-defined because $P$ is a partition so node i belongs to one and only one block. Furthermore, we define $\comblock{P}{j} \defeq \{ i | \commidx{P}{i} = j \} $. That is this returns all the nodes of a particular block. 
+    Here we develop notation to talk about partitions.  In this context, we seperate the nodes, $[n]$, into $k$ blocks. These blocks are labeled in some order, $G_1, \cdot, G_k$ so that we can refer to particular blocks. For each partition and for each node, we define the function $\commidx{P}{i}$ to return which block i is a member of in the partition P. This is well-defined because $P$ is a partition so node i belongs to one and only one block. Furthermore, we define $\comblock{P}{j} \defeq \{ i | \commidx{P}{i} = j \} $. That is this returns all the nodes of a particular block. 
 
-% In general, we represent any partition into $k$ parts, P,  with by a $k \times n $ matrix defined as $R_{ij} \defeq \begin{cases} 1 & \text{ \commidx{P}{i}=j } \\ 0 & \text{ else} \end{cases}.  Finally, we define relations between partitions via a poset. Formally, we say that $R < R'$ if R can be made from $R'$ by 'merging' on our more blocks of R' together. Precisely, this means that if $R'$ is composed of k blocks then for  any block $b$ of R, there is a set $S \in [k]$ $b = \bigcup_{j \in S} \comblock{R'}{j}$. This is a partial order so it is not the case that all pairs of partitions are comparable.  We also say that $R \leatom R'$ or that R is covered by $R'$ if we can build R with precisely one merge. Finally, we note that this ordering of partitions has a top element, each node in a block of size one, and a bottom element, all nodes in one block. 
+    % In general, we represent any partition into $k$ parts, P,  with by a $k \times n $ matrix defined as $R_{ij} \defeq \begin{cases} 1 & \text{ \commidx{P}{i}=j } \\ 0 & \text{ else} \end{cases}.  Finally, we define relations between partitions via a poset. Formally, we say that $R < R'$ if R can be made from $R'$ by 'merging' on our more blocks of R' together. Precisely, this means that if $R'$ is composed of k blocks then for  any block $b$ of R, there is a set $S \in [k]$ $b = \bigcup_{j \in S} \comblock{R'}{j}$. This is a partial order so it is not the case that all pairs of partitions are comparable.  We also say that $R \leatom R'$ or that R is covered by $R'$ if we can build R with precisely one merge. Finally, we note that this ordering of partitions has a top element, each node in a block of size one, and a bottom element, all nodes in one block. 
 
-\begin{example}
-    Let's consider partitions of $[5]$
-    \begin{figure}
-        \centering 
-        \resizebox{\textwidth}{!}{
-            \input{chapters/latex_figures/partition_example.tex}
+    \begin{example}
+        Let's consider partitions of $[5]$
+        \begin{figure}
+            \centering 
+            \resizebox{\textwidth}{!}{
+                \input{chapters/latex_figures/partition_example.tex}
 
-        }
-        \caption{All partitions of the elements $\{1,2,3,4,5\}$. Each node is a partition and each represents two partitions are related by merging to blocks of the higher partition yields the lower partition. }
-    \end{figure}\label{fig:03-example}
+            }
+            \caption{All partitions of the elements $\{1,2,3,4,5\}$. Each node is a partition and each represents two partitions are related by merging to blocks of the higher partition yields the lower partition. }
+        \end{figure}\label{fig:03-example}
 
-    Figure~\ref{fig:03-example} enumerates all the partitions of $[5]$ and places them in the Hasse diagram. To showcase the above definitions, consider first the partition $P = [(1,2), (3,4), (5)]$. For this partition, $\commidx{P}{1}=1$, $\commidx{P}{4}=2$, and so on. $4\comblock{P}{1}= \{ 1,2\}, \comblock{P}{2}=\{3,4\}$. 
+        Figure~\ref{fig:03-example} enumerates all the partitions of $[5]$ and places them in the Hasse diagram. To showcase the above definitions, consider first the partition $P = [(1,2), (3,4), (5)]$. For this partition, $\commidx{P}{1}=1$, $\commidx{P}{4}=2$, and so on. $4\comblock{P}{1}= \{ 1,2\}, \comblock{P}{2}=\{3,4\}$. 
 
-    Consider three other partitions: $Q = \{(1,2), (3),(4), (5)\}, S=\{(1,3),(2,4),(5)\}, T=\{(1),(2), (3), (4), (5)\}$. In the nomeclature of above we would say that $P \leatom Q$ as P can be formed by by merging the $(3)$ and $(4)$ blocks of Q. We would say $P < T$ as it takes two merge operations on T to form P. In particular $P \leatom Q \leatom T$. Finally, we would say that $S$ and $P$ are not comparable and neither $P < S$ or $S < P$ is true. 
+        Consider three other partitions: $Q = \{(1,2), (3),(4), (5)\}, S=\{(1,3),(2,4),(5)\}, T=\{(1),(2), (3), (4), (5)\}$. In the nomeclature of above we would say that $P \leatom Q$ as P can be formed by by merging the $(3)$ and $(4)$ blocks of Q. We would say $P < T$ as it takes two merge operations on T to form P. In particular $P \leatom Q \leatom T$. Finally, we would say that $S$ and $P$ are not comparable and neither $P < S$ or $S < P$ is true. 
 
-    Finally, the matrix represnetation of $P$ is given by $\begin{bmatrix}
-        1 & 1 & 0 & 0 & 0 \\
-        0 & 0 & 1 & 1 & 0 \\
-        0 & 0 & 0 & 0 & 1 
-    \end{bmatrix}$
+        Finally, the matrix represnetation of $P$ is given by $\begin{bmatrix}
+            1 & 1 & 0 & 0 & 0 \\
+            0 & 0 & 1 & 1 & 0 \\
+            0 & 0 & 0 & 0 & 1 
+        \end{bmatrix}$
 
-\end{example}
-
-
-\section{Pricing and Profits}
+    \end{example}
 
 
 \section{Pricing under Partial Network Information}\label{sec:part_info}
@@ -135,6 +132,33 @@ Since this price is optimal, it has zero expected regret. Note that in this Prop
 
 We note that it may seem odd that under no network information the expected regret is zero under uniform pricing. This is because the benchmark optimal pricing is itself uniform. With partial information this would change because additional structure in the network needs to be accounted for while computing optimal prices. That is, there is a regret for not having the full network information. 
 
+
+Here, we provide insight into when more generally does information matter.  Suppose, we have a family of random networks, $\{G_n\}$, and a for each network we have a price perhaps based on some partial information of the network. Under what conditions is will our pricing be sufficient to achieve negible regret. In answer this below: 
+\begin{theorem}
+    A sequence has neglible fractional regret if and only if \[ \frac{ \ex{ \| \tb{p} - \tb{p}^* \|_{B+B^T} }  }{ \ex{\Pi^*}} \to 0 \] 
+\end{theorem}
+
+This theorem says precisely that the condition for the regret to be small is that the difference in prices grows asymptotically slower than the profit. If we apply this result to uniform precisely we can also answer the question of when is any information necessary. 
+
+\begin{corollary}
+    A sequence of networks has negible fractional regret using uniform pricing if and only if \[ \frac{\ex{ \tb{v}^T (B+B^T)^{-1} \tb{v}} }{\ex{ \one^T B \one } } \to 0 \] 
+\end{corollary}
+
+If this condition is met then there is no value of information on the network. 
+
+We can demonstrate the failure of the interval property through a direct counter-example. 
+
+\section{Numerical experiments}\label{sec:pricing:numerics}
+
+
+\begin{figure}
+    \includegraphics{Figures/Pricing_04/k_lines_vary_alpha.pdf}
+\end{figure}   
+
+\begin{figure}
+    \includegraphics{Figures/Pricing_04/kstar_heatmap.pdf}
+\end{figure}   
+
 \section{Main results}\label{sec:pricing:results}
 
 
@@ -194,21 +218,32 @@ One practical problem for the merchant is to find the best segmentation.   This 
 
 ~\cite{candogan2012optimal} studied a variation where the merchant had to compute the optimal partition for two-level prices with a fixed high and low price. Instead of direct computation, the merchant must turn to approximation algorithms to find a strong partition.  
 
-The usual way of partitioning the network into $k$ partitions would be finding $k$ communities. The problem is often stated as the modularity maximization problem~\cite{karrer2011stochastic,ball2011efficient}. While this problem is also NP-hard, several approximation algorithms have been used successfully, such as the Louvain algorithm~\cite{blondel2008fast}. However, such partitions perform poorly for price differentiation. We provide examples in the appendix. Community detection algorithms provide partitions that have tight internal connections based on the spatial arrangement of the network. Nodes that are nearby can get grouped together even if they differ drastically in their level of influence. This is why they perform poorly.
+The usual way of partitioning the network into $k$ partitions would be finding $k$ communities. The problem is often stated as the modularity maximization problem~\cite{karrer2011stochastic,ball2011efficient}. While this problem is also NP-hard, several approximation algorithms have been used successfully, such as the Louvain algorithm~\cite{blondel2008fast}. However, such partitions perform poorly for price differentiation. We provide examples in the appendix\TODO{}. Community detection algorithms provide partitions that have tight internal connections based on the spatial arrangement of the network. Nodes that are nearby can get grouped together even if they differ drastically in their level of influence. This is why they perform poorly.
 
-One natural heurstic for how to partition in practice is based on the idea grouping similar nodes together. However, this similarity is not based on the location in the network i.e. edges and walks but instead on each nodes role in the network. The simpliest way to do this is to group nodes based unrestrained price, which is itself a metric for how net influential a node is or is not. 
+An interval heuristic to finding suitable partitions in practice is grouping nodes together by function not location. The simpliest way to do this is to group nodes based unrestrained price, which is itself a metric for how net influential a node is or is not. The proposed algorithm is a form of clustering over a one-dimensional space.  Explicitly we propose the following heuristic problem: 
 
+\begin{definition}
+    Given an integer $k$ and a vector $\tb{p}^*$ the clustering problem is to find a partioning $R^*$ of  $[n]$ such that 
+    
+\end{definition}
+
+While this problem may be solved with traditional k-means clustering algorithms\cite{}, we can solve for the optimal solution to \cite{} in polynomial time \cite{}. In \cite{}, we describe the full algorithm. The high level view of the algorithm is described in~\ref{fig:03-pipeline}. 
+
+One desirable property of the prices found my clustering is that the partitions are formed into 'intervals' in the sense that the gorups can be labeled and sorted such that every node in the first group is smaller than every node in the second which is smaller than the every node in the third and so on. We call  such a pricing structure an interval partiition. 
 \begin{definition}
     A partition is said to be an \textbf{interval partition} with respect to $\tb{p}$ if for all $i,j,k \in n$  $p_i > p_j > p_k$ and i and k are in the same community then j is as well. 
 \end{definition}
+In practice, this solution performs very well over random matrices. However, we can construct counter-examples where the solution to this algorithm is not optimal. Furthermore, this counter-example has the optimal partition being not even an interval partition. However, in \cite{} we examine the impact of the highest order terms of the taylor expansion of profit and find that for low-order terms an analogous condition does hold. This suggests that interplay of nodes in longer walks is what interferences with the interval property. 
+
 
 \begin{figure}
     \centering
     \resizebox{\textwidth}{!}{
         \input{chapters/latex_figures/pricing-pipeline.tex}
     }
-\end{figure}
+\end{figure}\label{fig:03-pipeline} 
 
+\input{chapters/03-help-pseudocode}
 Consider the following algorithm sketch. 
 
 % 0. Given: G, rho, a, c, k 
@@ -216,7 +251,7 @@ Consider the following algorithm sketch.
 % 2. Relabel the nodes so  $p_i \geq p_{j}$ if $i>j$ 
 % 3. 
 
-    Instead, we provide a different solution for partitioning more appropriate for the task. The detailed algorithm is provided in the Appendix. The algorithm clusters consumers that have similar net flow of influence. Our algorithm approximates \emph{net influence} by the net-degree (difference in the out-degree and in-degree) of the consumers. The clustering on the net influence is then done using a dynamic programming approach. By grouping nodes with similar net-degree together, even if they are distant, the resulting partition is more aligned with the unconstrained optimal price. This in turn yields a strong performance as detailed in the Appendix~\ref{apdx:2ndorder}. In fact, we show that when taking the series expansion of the profit, this solution is optimal through the second-order terms.
+    % Instead, we provide a different solution for partitioning more appropriate for the task. The detailed algorithm is provided in the Appendix. The algorithm clusters consumers that have similar net flow of influence. Our algorithm approximates \emph{net influence} by the net-degree (difference in the out-degree and in-degree) of the consumers. The clustering on the net influence is then done using a dynamic programming approach. By grouping nodes with similar net-degree together, even if they are distant, the resulting partition is more aligned with the unconstrained optimal price. This in turn yields a strong performance as detailed in the Appendix~\ref{apdx:2ndorder}. In fact, we show that when taking the series expansion of the profit, this solution is optimal through the second-order terms.
 
 \subsection{Granularity of Segmentation}
 By Theorem~\ref{thm:noisy-regret} the merchant's expected profit depends upon the quality and granularity of the partition. In the absence of noise we quantify the performance of different granularities of segmentation. This performance is completely governed by the first term of the expected profit in Theorem~\ref{thm:noisy-regret}. We also compare the second term in the expected profit that captures the loss due to lack of knowledge about $\alpha$. Lower loss implies that a segmentation is more robust to noise. These two terms demonstrate the tradeoffs between optimality and robustness. If the merchant overly relies on the network G, they overfit and lose profit when noise levels are high. If they are too cautious, they will miss out on potential profit when noise levels are low.
@@ -301,55 +336,45 @@ Figure~\ref{fig:klevel_numbies} showcases the results. The first panel shows the
     \label{fig:klevel_numbies}
 \end{figure}
 
+\subsection{Low-order results}
 
-\begin{definition}
+In this section, we study the series expansion of the pricing and profit structure in terms of length of walks. These approximations provide insights into the structure of the problem. More 
 
-    The partitioned pricing problem is said to satisfy the interval property if the following holds.
-    Let $(R, p^*(R))$ be an optimal solution then if $i,j$ are in the same community then  dif \[p^*_i > p^*_k > p^*_j \] then k is also a member of this i,j containing community.
-\end{definition}
+We begin by expressing the series expansion of the price and profit. 
 
-In essence this property says that the optimal partition can be thought of as seperating the nodes based their optimal price and this partition groups form contingous intervals, that is each group can be described as have all nodes whose price is beteen an upper and lower threshold. Such a property has strong algorithmic implications.  This property allows for a dynamic programming approach that solves the problem exactly in polynomial time in both n and $k$. 
-
-In \cite{candogan2012optimal}, they show that the problem of given two fixed pricing levels, $p_{high}, p_{low}$, then the problem of determining the optimal partition is NP-hard. But the subtlety is that 1) we are solving a joint optimization problem 2) and only making about the properties of optimal solutions. 
-
-
-\subsection{General Results}
-
-Here, we provide insight into when more generally does information matter.  Suppose, we have a family of random networks, $\{G_n\}$, and a for each network we have a price perhaps based on some partial information of the network. Under what conditions is will our pricing be sufficient to achieve negible regret. In answer this below: 
 \begin{theorem}
-    A sequence has neglible fractional regret if and only if \[ \frac{ \ex{ \| \tb{p} - \tb{p}^* \|_{B+B^T} }  }{ \ex{\Pi^*}} \to 0 \] 
+    Given a partition, $R$, as $\rho \to 0$ the price is approximated by 
+    \begin{align*}
+        \tb{p}(0,R) &= \frac{a+c}{2} \one \\ 
+        &+ \gamma R^T (RR^T)^{-1} R (G-G^T) \one \\ 
+        &+ \gamma^2 \left( 2 (G^2 - (G^T)^2) - (G+G^T) R (RR^T)^{-1} R (G+G^T) \right)\one \\
+        &+ O(\rho^3 )
+    \end{align*}
 \end{theorem}
 
-This theorem says precisely that the condition for the regret to be small is that the difference in prices grows asymptotically slower than the profit. If we apply this result to uniform precisely we can also answer the question of when is any information necessary. 
 
-\begin{corollary}
-    A sequence of networks has negible fractional regret using uniform pricing if and only if \[ \frac{\ex{ \tb{v}^T (B+B^T)^{-1} \tb{v}} }{\ex{ \one^T B \one } } \to 0 \] 
-\end{corollary}
 
-If this condition is met then there is no value of information on the network. 
+\begin{theorem}
+    Given a partition $R$ as $\rho \to 0$ the profit is approximated by
+    \begin{align*}
+        \Pi(\tb{p}(R,G)) &= \frac{(a-c)^2}{8} n & \text{Order 0 }\\
+        &+ \gamma \frac{(a-c)^2}{8} \one^T G \one & \text{Order 1}\\
+        &+ \gamma^2 \frac{(a-c)^2}{8} \one^T \left( G^2 + \frac{1}{4} (G-G^T)^T R^T(RR^T)^{-1} R (G-G^T) \right) \one & \text{Order 2} \\
+        &+ O(\rho^3) \\
+    \end{align*}
 
-We can demonstrate the failure of the interval property through a direct counter-example. 
+        Where $\gamma = \frac{2\rho}{\|G+G^T\|}$
 
-\section{Numerical experiments}\label{sec:pricing:numerics}
+\end{theorem}
 
-\begin{figure}[t]
-  \centering
-  % \includegraphics[width=0.8\textwidth]{pricing-profit.pdf}
-  \fbox{\parbox[c][1.6in][c]{0.75\textwidth}{\centering Placeholder figure\\
-    \small (replace with \texttt{\textbackslash includegraphics})}}
-  \caption{Profit as a function of partition fineness.}\label{fig:pricing:profit}
-\end{figure}
+One implication of this result is that it shows the interval property up through second order. This means that for all networks if the impact of longer walks decays quickly ($\rho \to 0$) then the best partition is one that places nodes into interval partitions based on the vector $(G-G^T)\one$. 
 
-\Cref{fig:pricing:profit} shows \ldots
+\begin{theorem}
+    As $\rho\to 0 $ the optimal partition into $k$ parts then the optimal partition is an inteval partition with respect to $(G-G^T)\one$.
+\end{theorem}
+\textit{Proof idea} The core of this proof based on the low order profit expression. We take the only term that depeends upon the partition and show that if the optimal partition were not an interval partition then there is an improving swap of two nodes and thus the partition is not optimal. 
 
-\begin{figure}
-    \includegraphics{Figures/Pricing_04/k_lines_vary_alpha.pdf}
-\end{figure}   
 
-\begin{figure}
-    \includegraphics{Figures/Pricing_04/kstar_heatmap.pdf}
-\end{figure}   
 
-\section{Discussion}\label{sec:pricing:discussion}
 
-\TODO{Summary of the chapter and a bridge to \cref{ch:misinfo}.}
+
