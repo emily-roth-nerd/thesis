@@ -174,7 +174,7 @@ The expected profit under optimal block-level pricing is given below.
 This particular form of the profit decomposes into three pieces based on the series expansion of the profit. The first term is the expected profit under optimal uniform pricing. The second term is the remainder of the low-order terms of the series expansion of the profit, and the third term represents the higher-order terms, which are small compared to the first- and second-order terms as the walks are weighted geometrically by their length. Specifically, the expectation in the second term, $\ev{\bo^T (G^T - G)(G-G^T) \bo}$, is the sum of the expected quadratic difference between the out-degree ($out_i$) and in-degree ($in_i$) (the uncentered second moment) over all nodes. In other words, this is $\sum_{i=1}^{nm} E[ {(in_i - out_i)}^2]$.   As a corollary to Theorem~\ref{thm:sbm_opt}, we obtain the regret of using uniform pricing compared to optimal pricing.
 
 \begin{corollary}\label{cor:uni_sbm_reg}
-    Consider a sequence of SBMs using community structure $M$ with density $\Omega(\frac{\log(n)}{n})$. Then the expected regret of uniform pricing is:
+    Consider a sequence of SBMs using community structure $M$ with density $\Omega(\frac{x`'\log(n)}{n})$. Then the expected regret of uniform pricing is:
     \begin{equation}
         \left(\frac{\rho}{p(n) n \|M+M^T\|} \right)^2 \ex{ \bo^T (G^T-G)(G-G^T)\bo} + o\left( \left(p(n) n \|M+M^T\| \right)^{-3} \right)
     \end{equation}
